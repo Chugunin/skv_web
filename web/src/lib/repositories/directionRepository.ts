@@ -1,8 +1,13 @@
-import { directions } from "@data/directions";
+import { readItems } from "@directus/sdk";
+import { directus } from "@lib/directus/client";
 import type {Direction} from "@/models/direction";
 
 export async function getDirections(): Promise<Direction[]> {
 
-    return directions;
+    return await directus.request(
+
+        readItems("directions")
+
+    );
 
 }
