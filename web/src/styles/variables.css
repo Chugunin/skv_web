@@ -35,4 +35,10 @@
 
     --transition-fast: .2s ease;
     --transition-normal: .35s ease;
+
+    /* */
+    
+    --color-dark:#383634;
+
+    --section-light:#F6F2EC;
 }

@@ -54,6 +54,6 @@ input{
 
 section{
 
-    padding:var(--section-spacing) 0;
+    position:relative;
 
 }
