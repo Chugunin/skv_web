@@ -1,2 +1,2 @@
-export * from "./repositories/articleRepository";
+export * from "./repositories/directusArticleRepository";
 export * from "./repositories/directionRepository";
