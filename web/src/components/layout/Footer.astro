@@ -1,6 +1,10 @@
+---
+import Container from "./Container.astro";
+---
+
 <footer>
 
-    <div class="container">
+    <Container>
 
         <div class="top">
 
@@ -50,7 +54,7 @@
 
         </div>
 
-    </div>
+    </Container>
 
 </footer>
 
@@ -63,17 +67,6 @@
         color:white;
 
         padding:80px 0;
-
-    }
-
-    .container{
-
-        width:min(
-                calc(100% - var(--container-padding)*2),
-                var(--container-width)
-        );
-
-        margin-inline:auto;
 
     }
 

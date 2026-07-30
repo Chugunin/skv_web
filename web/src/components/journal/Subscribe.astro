@@ -1,6 +1,10 @@
+---
+import Container from "../layout/Container.astro";
+---
+
 <section class="subscribe" data-reveal>
 
-    <div class="container">
+    <Container>
 
         <div class="box">
 
@@ -18,10 +22,12 @@
 
             <form>
 
-                <input
-                        type="email"
-                        placeholder="Ваш Email"
-                />
+                <label>
+                    <input
+                            type="email"
+                            placeholder="Ваш Email"
+                    />
+                </label>
 
                 <button>
 
@@ -33,7 +39,7 @@
 
         </div>
 
-    </div>
+    </Container>
 
 </section>
 
@@ -44,17 +50,6 @@
         background:#F5F1EB;
 
         padding:140px 0;
-
-    }
-
-    .container{
-
-        width:min(
-                calc(100% - var(--container-padding)*2),
-                var(--container-width)
-        );
-
-        margin-inline:auto;
 
     }
 

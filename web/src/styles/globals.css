@@ -32,6 +32,10 @@ body{
 
     overflow-x:hidden;
 
+    -webkit-font-smoothing:antialiased;
+
+    text-rendering:optimizeLegibility;
+    
 }
 
 img{
@@ -83,5 +87,29 @@ section{
     opacity:1;
 
     transform:none;
+
+}
+
+.hidden{
+
+    display:none !important;
+
+}
+
+.text-center{
+
+    text-align:center;
+
+}
+
+.mt-auto{
+
+    margin-top:auto;
+
+}
+
+.w-100{
+
+    width:100%;
 
 }

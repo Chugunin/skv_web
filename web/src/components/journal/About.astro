@@ -1,27 +1,35 @@
+---
+import Container from "../layout/Container.astro";
+---
+
 <section class="about" data-reveal>
 
-    <div class="about__container">
-
-        <div class="about__card">
-
-            <h2>
-
-                О журнале
-
-            </h2>
-
-            <p>
-
-                SKV Journal объединяет экспертные материалы
-                о том, как формируется наше восприятие,
-                почему мы реагируем определённым образом
-                и какие процессы влияют на качество жизни.
-
-            </p>
-
+    <Container>
+    
+        <div class="about__container">
+    
+            <div class="about__card">
+    
+                <h2>
+    
+                    О журнале
+    
+                </h2>
+    
+                <p>
+    
+                    SKV Journal объединяет экспертные материалы
+                    о том, как формируется наше восприятие,
+                    почему мы реагируем определённым образом
+                    и какие процессы влияют на качество жизни.
+    
+                </p>
+    
+            </div>
+    
         </div>
-
-    </div>
+        
+    </Container>
 
 </section>
 
@@ -36,13 +44,6 @@
     }
 
     .about__container{
-
-        width:min(
-                calc(100% - var(--container-padding) * 2),
-                1280px
-        );
-
-        margin-inline:auto;
 
         display:flex;
 

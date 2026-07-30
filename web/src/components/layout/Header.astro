@@ -1,21 +1,18 @@
-<header class="header">
+<header id="site-header" class="header">
 
     <div class="header__container">
 
-        <a
-                href="/"
-                class="header__logo"
-        >
+        <a href="/" class="logo">
+
             SKV
+
         </a>
 
-        <nav class="header__nav">
+        <nav>
 
             <a href="/">Главная</a>
 
-            <a href="/journal">
-                Journal
-            </a>
+            <a href="/journal" class="active">Journal</a>
 
         </nav>
 
@@ -23,30 +20,69 @@
 
 </header>
 
+<script type="module">
+
+    const header = document.getElementById("site-header");
+
+    if (header) {
+
+        const update = () => {
+
+            header.classList.toggle(
+                "header--scrolled",
+                window.scrollY > 40
+            );
+
+        };
+
+        update();
+
+        window.addEventListener("scroll", update, {
+            passive: true
+        });
+
+    }
+
+</script>
+
 <style>
 
     .header{
 
-        position:absolute;
-
-        left:0;
-        right:0;
-        top:0;
-
-        z-index:500;
-
-        color:white;
+        position:fixed;
 
         inset-inline:0;
 
-        padding:32px 0;
+        top:0;
+
+        z-index:1000;
+
+        padding:22px 0;
+
+        transition:
+                background .3s,
+                backdrop-filter .3s,
+                box-shadow .3s,
+                padding .3s;
+
+    }
+
+    .header--scrolled{
+
+        background:rgba(34,34,34,.82);
+
+        backdrop-filter:blur(12px);
+
+        box-shadow:0 10px 30px rgba(0,0,0,.18);
+
+        padding:16px 0;
 
     }
 
     .header__container{
 
         width:min(
-                calc(100% - var(--container-padding) * 2),
+                calc(100% - var(--container-padding)*2),
                 var(--container-width)
         );
 
@@ -60,34 +96,63 @@
 
     }
 
-    .header__logo{
+    .logo{
+
+        color:white;
 
         font-size:24px;
 
-        letter-spacing:.08em;
+        letter-spacing:.12em;
 
-        color:white;
     }
 
-    .header__nav{
+    nav{
 
         display:flex;
 
-        gap:40px;
+        gap:36px;
 
     }
 
-    .header__nav a{
+    nav a{
 
         color:white;
 
+        opacity:.75;
+
         transition:.25s;
-        
+
     }
 
-    .header__nav a:hover{
+    nav a:hover{
 
-        opacity:.65;
+        opacity:1;
+
+    }
+
+    .active{
+
+        opacity:1;
+
+        position:relative;
+
+    }
+
+    .active::after{
+
+        content:"";
+
+        position:absolute;
+
+        left:0;
+
+        right:0;
+
+        bottom:-6px;
+
+        height:2px;
+
+        background:white;
 
     }
 

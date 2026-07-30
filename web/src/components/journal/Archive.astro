@@ -1,4 +1,6 @@
 ---
+import Container from "../layout/Container.astro";
+
 const articles = Array.from({ length: 10 }, (_, index) => ({
     title: `Статья ${index + 1}`,
     description: "Краткое описание статьи",
@@ -9,7 +11,7 @@ const articles = Array.from({ length: 10 }, (_, index) => ({
 
 <section class="archive" data-reveal>
 
-    <div class="container">
+    <Container>
 
         <div class="header">
 
@@ -79,7 +81,7 @@ const articles = Array.from({ length: 10 }, (_, index) => ({
 
         </div>
 
-    </div>
+    </Container>
 
 </section>
 
@@ -126,17 +128,6 @@ const articles = Array.from({ length: 10 }, (_, index) => ({
         background:#2F2C2A;
 
         padding:120px 0;
-
-    }
-
-    .container{
-
-        width:min(
-                calc(100% - var(--container-padding)*2),
-                var(--container-width)
-        );
-
-        margin-inline:auto;
 
     }
 
