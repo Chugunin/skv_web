@@ -1,6 +1,8 @@
 ---
 import Container from "../layout/Container.astro";
-import { directions } from "../../data/directions";
+import { getDirections } from "../../lib/repository";
+
+const directions = await getDirections();
 ---
 
 <section class="directions" data-reveal>

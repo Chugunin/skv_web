@@ -1,6 +1,8 @@
 ---
 import Container from "../layout/Container.astro";
-import { archiveArticles as articles } from "../../data/archive";
+import { getArchive } from "../../lib/repository";
+
+const articles = await getArchive();
 ---
 
 <section class="archive" data-reveal>
