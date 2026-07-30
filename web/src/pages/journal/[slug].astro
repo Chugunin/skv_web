@@ -1,10 +1,14 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import Container from "@components/layout/Container.astro";
 
 import {
     getArchive,
     getArticleBySlug
-    } from "@lib/repository";
+} from "@lib/repository";
+
+import { formatDate } from "@lib/utils";
+import ArticleMeta from "@/components/article/ArticleMeta.astro";
 
 export async function getStaticPaths() {
 
@@ -12,15 +16,15 @@ export async function getStaticPaths() {
 
     return articles.map(article => ({
 
-    params: {
+        params: {
 
-        slug: article.slug
+            slug: article.slug
 
         }
 
     }));
 
-    }
+}
 
 const { slug } = Astro.params;
 
@@ -30,14 +34,26 @@ if (!article) {
 
     return Astro.redirect("/journal");
 
-    }
+}
 ---
 
 <BaseLayout title={article.title}>
 
-    <main class="article">
+    <section class="article">
 
-        <div class="container">
+        <Container>
+
+            <img
+                    class="article__image"
+                    src={article.image}
+                    alt={article.title}
+            />
+
+            <ArticleMeta
+                    date={article.date}
+                    author={article.author}
+                    readingTime={article.readingTime}
+            />
 
             <h1>
 
@@ -45,15 +61,27 @@ if (!article) {
 
             </h1>
 
-            <p>
+            <p class="lead">
 
                 {article.description}
 
             </p>
 
-        </div>
+            <div class="article__content">
 
-    </main>
+                {
+
+                    article.content ||
+
+                    `Здесь будет содержимое статьи. Позже этот текст будет поступать из Directus.`
+
+                }
+
+            </div>
+
+        </Container>
+
+    </section>
 
 </BaseLayout>
 
@@ -61,18 +89,67 @@ if (!article) {
 
     .article{
 
-        padding:180px 0 120px;
+        padding:160px 0 120px;
 
     }
 
-    .container{
+    .article__image{
 
-        width:min(
-                calc(100% - var(--container-padding) * 2),
-                var(--container-width)
-        );
+        width:100%;
 
-        margin-inline:auto;
+        aspect-ratio:16/9;
+
+        object-fit:cover;
+
+        border-radius:12px;
+
+        margin-bottom:40px;
+
+    }
+
+    .article__meta{
+
+        display:flex;
+
+        gap:24px;
+
+        color:#777;
+
+        font-size:14px;
+
+        margin-bottom:18px;
+
+    }
+
+    .article h1{
+
+        font-size:52px;
+
+        font-weight:300;
+
+        margin-bottom:28px;
+
+    }
+
+    .lead{
+
+        font-size:22px;
+
+        line-height:1.8;
+
+        color:#555;
+
+        margin-bottom:50px;
+
+    }
+
+    .article__content{
+
+        font-size:18px;
+
+        line-height:2;
+
+        max-width:850px;
 
     }
 

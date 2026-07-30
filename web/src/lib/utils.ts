@@ -37,3 +37,17 @@ export function truncate(
     return `${text.slice(0, length).trimEnd()}…`;
 
 }
+
+export function joinTags(tags?: { title: string }[]): string {
+
+    if (!tags?.length) {
+
+        return "";
+
+    }
+
+    return tags
+        .map(tag => tag.title)
+        .join(", ");
+
+}
