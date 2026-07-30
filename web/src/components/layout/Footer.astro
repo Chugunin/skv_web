@@ -1,12 +1,54 @@
-<footer class="footer">
+<footer>
 
-    <div class="footer__container">
+    <div class="container">
 
-        <p>
+        <div class="top">
 
-            © SKV
+            <div>
 
-        </p>
+                <h3>
+
+                    SKV
+
+                </h3>
+
+                <p>
+
+                    Psychology Journal
+
+                </p>
+
+            </div>
+
+            <nav>
+
+                <a href="#">
+
+                    Главная
+
+                </a>
+
+                <a href="#">
+
+                    Journal
+
+                </a>
+
+                <a href="#">
+
+                    Контакты
+
+                </a>
+
+            </nav>
+
+        </div>
+
+        <div class="bottom">
+
+            © 2026 SKV
+
+        </div>
 
     </div>
 
@@ -14,22 +56,86 @@
 
 <style>
 
-    .footer{
+    footer{
 
-        padding:64px 0;
+        background:#252321;
 
-        border-top:1px solid var(--color-border);
+        color:white;
+
+        padding:80px 0;
 
     }
 
-    .footer__container{
+    .container{
 
         width:min(
-                calc(100% - var(--container-padding) * 2),
+                calc(100% - var(--container-padding)*2),
                 var(--container-width)
         );
 
         margin-inline:auto;
+
+    }
+
+    .top{
+
+        display:flex;
+
+        justify-content:space-between;
+
+        align-items:flex-start;
+
+        padding-bottom:45px;
+
+        border-bottom:1px solid rgba(255,255,255,.15);
+
+    }
+
+    .top nav{
+
+        display:flex;
+
+        gap:35px;
+
+    }
+
+    .top a{
+
+        color:white;
+
+        opacity:.85;
+
+    }
+
+    .top a:hover{
+
+        opacity:1;
+
+    }
+
+    .bottom{
+
+        padding-top:30px;
+
+        opacity:.55;
+
+    }
+
+    @media(max-width:900px){
+
+        .top{
+
+            flex-direction:column;
+
+            gap:30px;
+
+        }
+
+        .top nav{
+
+            flex-wrap:wrap;
+
+        }
 
     }
 
