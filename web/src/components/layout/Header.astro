@@ -1,3 +1,6 @@
+---
+import {navigation} from "@lib/navigation.ts";
+---
 <header id="site-header" class="header">
 
     <div class="header__container">
@@ -10,9 +13,25 @@
 
         <nav>
 
-            <a href="/">Главная</a>
+            {
 
-            <a href="/journal" class="active">Journal</a>
+                navigation.map(item=>(
+
+                        <a
+                                href={item.href}
+                                class={Astro.url.pathname===item.href
+                                    ? "active"
+                                    : ""}
+
+                        >
+
+                            {item.title}
+
+                        </a>
+
+                ))
+
+            }
 
         </nav>
 

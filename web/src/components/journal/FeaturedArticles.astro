@@ -1,6 +1,6 @@
 ---
 import Container from "../layout/Container.astro";
-import { getFeaturedPosts } from "../../lib/repository";
+import { getFeaturedPosts } from "@lib/repository.ts";
 
 const posts = await getFeaturedPosts();
 ---

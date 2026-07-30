@@ -1,6 +1,6 @@
 ---
 import Container from "../layout/Container.astro";
-import { getArchive } from "../../lib/repository";
+import { getArchive } from "@lib/repository.ts";
 
 const articles = await getArchive();
 ---
