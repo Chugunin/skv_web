@@ -1,5 +1,265 @@
-<section>
+---
+const articles = Array.from({ length: 10 }, (_, index) => ({
+    title: `Статья ${index + 1}`,
+    description: "Краткое описание статьи",
+    image: `https://picsum.photos/700/500?archive=${index}`,
+    date: "03.07.2026"
+}));
+---
 
-    ARCHIVE
+<section class="archive">
+
+    <div class="container">
+
+        <div class="header">
+
+            <h2>Архив материалов</h2>
+
+            <div class="buttons">
+
+                <button id="prev">
+
+                    ←
+
+                </button>
+
+                <button id="next">
+
+                    →
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div
+                class="slider"
+                id="archive-slider"
+        >
+
+            {
+
+                articles.map(article => (
+
+                        <article class="card">
+
+                            <img
+                                    src={article.image}
+                                    alt=""
+                            />
+
+                            <div class="content">
+
+                            <span>
+
+                                {article.date}
+
+                            </span>
+
+                                <h3>
+
+                                    {article.title}
+
+                                </h3>
+
+                                <p>
+
+                                    {article.description}
+
+                                </p>
+
+                            </div>
+
+                        </article>
+
+                ))
+
+            }
+
+        </div>
+
+    </div>
 
 </section>
+
+<script>
+
+    const slider=document.querySelector("#archive-slider");
+
+    const prev=document.querySelector("#prev");
+
+    const next=document.querySelector("#next");
+
+    const offset=380;
+
+    prev?.addEventListener("click",()=>{
+
+        slider?.scrollBy({
+
+            left:-offset,
+
+            behavior:"smooth"
+
+        });
+
+    });
+
+    next?.addEventListener("click",()=>{
+
+        slider?.scrollBy({
+
+            left:offset,
+
+            behavior:"smooth"
+
+        });
+
+    });
+
+</script>
+
+<style>
+
+    .archive{
+
+        background:#2F2C2A;
+
+        padding:120px 0;
+
+    }
+
+    .container{
+
+        width:min(
+                calc(100% - var(--container-padding)*2),
+                var(--container-width)
+        );
+
+        margin-inline:auto;
+
+    }
+
+    .header{
+
+        display:flex;
+
+        justify-content:space-between;
+
+        align-items:center;
+
+        margin-bottom:50px;
+
+    }
+
+    .header h2{
+
+        color:white;
+
+        font-weight:300;
+
+    }
+
+    .buttons{
+
+        display:flex;
+
+        gap:12px;
+
+    }
+
+    .buttons button{
+
+        width:52px;
+
+        height:52px;
+
+        border-radius:50%;
+
+        background:white;
+
+        transition:.25s;
+
+    }
+
+    .buttons button:hover{
+
+        transform:scale(1.08);
+
+    }
+
+    .slider{
+
+        display:flex;
+
+        gap:28px;
+
+        overflow-x:auto;
+
+        scrollbar-width:none;
+
+        scroll-behavior:smooth;
+
+        padding-bottom:10px;
+
+    }
+
+    .slider::-webkit-scrollbar{
+
+        display:none;
+
+    }
+
+    .card{
+
+        flex:0 0 340px;
+
+        background:white;
+
+        border-radius:8px;
+
+        overflow:hidden;
+
+    }
+
+    .card img{
+
+        width:100%;
+
+        height:240px;
+
+        object-fit:cover;
+
+    }
+
+    .content{
+
+        padding:24px;
+
+    }
+
+    .content span{
+
+        font-size:14px;
+
+        color:#777;
+
+    }
+
+    .content h3{
+
+        margin:18px 0;
+
+        font-size:24px;
+
+        font-weight:300;
+
+    }
+
+    .content p{
+
+        line-height:1.7;
+
+    }
+
+</style>
