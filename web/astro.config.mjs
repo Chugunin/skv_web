@@ -35,8 +35,8 @@ export default defineConfig({
                     new URL("./src/assets", import.meta.url)
                 ),
 
-                "@types": fileURLToPath(
-                    new URL("./src/types", import.meta.url)
+                "@models": fileURLToPath(
+                    new URL("./src/models", import.meta.url)
                 )
 
             }

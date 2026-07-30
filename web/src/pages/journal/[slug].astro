@@ -1,0 +1,79 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+
+import {
+    getArchive,
+    getArticleBySlug
+    } from "@lib/repository";
+
+export async function getStaticPaths() {
+
+    const articles = await getArchive();
+
+    return articles.map(article => ({
+
+    params: {
+
+        slug: article.slug
+
+        }
+
+    }));
+
+    }
+
+const { slug } = Astro.params;
+
+const article = await getArticleBySlug(slug!);
+
+if (!article) {
+
+    return Astro.redirect("/journal");
+
+    }
+---
+
+<BaseLayout title={article.title}>
+
+    <main class="article">
+
+        <div class="container">
+
+            <h1>
+
+                {article.title}
+
+            </h1>
+
+            <p>
+
+                {article.description}
+
+            </p>
+
+        </div>
+
+    </main>
+
+</BaseLayout>
+
+<style>
+
+    .article{
+
+        padding:180px 0 120px;
+
+    }
+
+    .container{
+
+        width:min(
+                calc(100% - var(--container-padding) * 2),
+                var(--container-width)
+        );
+
+        margin-inline:auto;
+
+    }
+
+</style>

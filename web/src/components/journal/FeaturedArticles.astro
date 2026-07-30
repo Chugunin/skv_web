@@ -1,6 +1,6 @@
 ---
 import Container from "../layout/Container.astro";
-import { getFeaturedPosts } from "@lib/repository.ts";
+import { getFeaturedPosts } from "@lib/repository";
 
 const posts = await getFeaturedPosts();
 ---
@@ -25,7 +25,10 @@ const posts = await getFeaturedPosts();
 
                 posts.map(post => (
 
-                        <article class="card">
+                        <a
+                                class="card"
+                                href={`/journal/${post.slug}`}
+                        >
 
                             <img
                                     src={post.image}
@@ -54,7 +57,7 @@ const posts = await getFeaturedPosts();
 
                             </div>
 
-                        </article>
+                        </a>
 
                 ))
 

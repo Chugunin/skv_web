@@ -1,6 +1,6 @@
 # build output
 dist/
-# generated types
+# generated models
 .astro/
 
 # dependencies

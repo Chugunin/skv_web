@@ -1,6 +1,6 @@
 ---
 import Container from "../layout/Container.astro";
-import { getArchive } from "@lib/repository.ts";
+import { getArchive } from "@lib/repository";
 
 const articles = await getArchive();
 ---
@@ -40,7 +40,10 @@ const articles = await getArchive();
 
                 articles.map(article => (
 
-                        <article class="card">
+                        <a
+                                class="card"
+                                href={`/journal/${article.slug}`}
+                        >
 
                             <img
                                     src={article.image}
@@ -69,7 +72,7 @@ const articles = await getArchive();
 
                             </div>
 
-                        </article>
+                        </a>
 
                 ))
 

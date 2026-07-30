@@ -13,7 +13,7 @@
       "@styles/*": ["src/styles/*"],
       "@data/*": ["src/data/*"],
       "@lib/*": ["src/lib/*"],
-      "@types/*": ["src/types/*"],
+      "@models/*": ["src/types/*"],
       "@assets/*": ["src/assets/*"]
     }
   }

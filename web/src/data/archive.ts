@@ -1,29 +1,41 @@
-export interface ArchiveArticle {
+import type { Article } from "@/models/article";
 
-    title:string;
+import { categories } from "./categories";
+import { tags } from "./tags";
 
-    description:string;
+const researchCategory = categories.find(
+    c => c.slug === "research"
+)!;
 
-    image:string;
+const journalTag = tags.find(
+    t => t.slug === "journal"
+)!;
 
-    date:string;
+export const archiveArticles: Article[] = Array.from(
+    { length: 10 },
+    (_, i) => ({
+            id: String(i + 1),
 
-}
+            slug: `article-${i + 1}`,
 
-export const archiveArticles = Array.from(
+            title: `Статья ${i + 1}`,
 
-    {length:10},
+            description: "Краткое описание статьи.",
 
-    (_,i)=>({
+            content: "",
 
-        title:`Статья ${i+1}`,
+            image: `https://picsum.photos/700/500?${i}`,
 
-        description:"Краткое описание статьи",
+            date: "2026-07-03",
 
-        image:`https://picsum.photos/700/500?${i}`,
+            author: "SKV",
 
-        date:"03.07.2026"
+            readingTime: 5,
 
+            category: researchCategory,
+
+            tags: [journalTag],
+
+            featured: false
     })
-
 );
