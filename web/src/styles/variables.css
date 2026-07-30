@@ -1,0 +1,38 @@
+:root {
+
+    /* ===========================
+       Colors
+    =========================== */
+
+    --color-background: #F8F6F3;
+    --color-surface: #FFFFFF;
+
+    --color-text: #1C1C1C;
+    --color-text-light: #666666;
+
+    --color-accent: #B58A58;
+    --color-accent-hover: #9C7448;
+
+    --color-border: rgba(0,0,0,.08);
+
+    /* ===========================
+       Layout
+    =========================== */
+
+    --container-width: 1280px;
+
+    --container-padding: 24px;
+
+    --section-spacing: 120px;
+
+    --radius-small: 8px;
+    --radius-medium: 16px;
+    --radius-large: 24px;
+
+    /* ===========================
+       Animation
+    =========================== */
+
+    --transition-fast: .2s ease;
+    --transition-normal: .35s ease;
+}

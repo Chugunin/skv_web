@@ -1,0 +1,37 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+import Header from "../../components/layout/Header.astro";
+import Footer from "../../components/layout/Footer.astro";
+
+import Hero from "../../components/journal/Hero.astro";
+import About from "../../components/journal/About.astro";
+import Directions from "../../components/journal/Directions.astro";
+import FeaturedArticles from "../../components/journal/FeaturedArticles.astro";
+import Archive from "../../components/journal/Archive.astro";
+import Subscribe from "../../components/journal/Subscribe.astro";
+---
+
+<BaseLayout title="SKV Journal">
+
+    <Header />
+
+    <Hero />
+
+    <main>
+
+        <About />
+
+        <Directions />
+
+        <FeaturedArticles />
+
+        <Archive />
+
+        <Subscribe />
+
+    </main>
+
+    <Footer />
+
+</BaseLayout>

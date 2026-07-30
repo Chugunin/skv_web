@@ -1,0 +1,59 @@
+@import "./variables.css";
+@import "./typography.css";
+
+*,
+*::before,
+*::after{
+
+    margin:0;
+    padding:0;
+
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    background:var(--color-background);
+
+    overflow-x:hidden;
+
+}
+
+img{
+
+    display:block;
+
+    width:100%;
+
+}
+
+button{
+
+    border:none;
+
+    background:none;
+
+    cursor:pointer;
+
+    font:inherit;
+
+}
+
+input{
+
+    font:inherit;
+
+}
+
+section{
+
+    padding:var(--section-spacing) 0;
+
+}
