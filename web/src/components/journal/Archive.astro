@@ -1,12 +1,6 @@
 ---
 import Container from "../layout/Container.astro";
-
-const articles = Array.from({ length: 10 }, (_, index) => ({
-    title: `Статья ${index + 1}`,
-    description: "Краткое описание статьи",
-    image: `https://picsum.photos/700/500?archive=${index}`,
-    date: "03.07.2026"
-}));
+import { archiveArticles as articles } from "../../data/archive";
 ---
 
 <section class="archive" data-reveal>

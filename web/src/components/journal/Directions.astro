@@ -1,45 +1,6 @@
 ---
 import Container from "../layout/Container.astro";
-
-const directions = [
-
-    {
-        title:"Восприятие",
-        description:"Как человек воспринимает себя и окружающий мир.",
-        image:"https://picsum.photos/600/600?1"
-    },
-
-    {
-        title:"Мышление",
-        description:"Убеждения и установки, когнитивные процессы.",
-        image:"https://picsum.photos/600/600?2"
-    },
-
-    {
-        title:"Эмоции",
-        description:"Внутренние состояния и способы реагирования.",
-        image:"https://picsum.photos/600/600?3"
-    },
-
-    {
-        title:"Отношения",
-        description:"Близость, границы и взаимодействие.",
-        image:"https://picsum.photos/600/600?4"
-    },
-
-    {
-        title:"Личность",
-        description:"Особенности характера и внутренней организации.",
-        image:"https://picsum.photos/600/600?5"
-    },
-
-    {
-        title:"Качество жизни",
-        description:"Осознанность, выборы и устойчивость.",
-        image:"https://picsum.photos/600/600?6"
-    }
-
-];
+import { directions } from "../../data/directions";
 ---
 
 <section class="directions" data-reveal>
