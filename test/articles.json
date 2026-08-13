@@ -1,0 +1,68 @@
+[
+  {
+    "title": "A September Market",
+    "slug": "a-september-market",
+    "description": "Description",
+    "content": "<p>Тестовое содержимое статьи.</p>",
+    "image": "https://picsum.photos/900/600?11",
+    "date": "2026-07-03",
+    "author": "SKV",
+    "readingTime": 4,
+    "featured": true
+  },
+  {
+    "title": "Literary Market",
+    "slug": "literary-market",
+    "description": "Description",
+    "content": "<p>Тестовое содержимое статьи.</p>",
+    "image": "https://picsum.photos/900/600?12",
+    "date": "2026-07-03",
+    "author": "SKV",
+    "readingTime": 6,
+    "featured": true
+  },
+  {
+    "title": "Kids Sports",
+    "slug": "kids-sports",
+    "description": "Description",
+    "content": "<p>Тестовое содержимое статьи.</p>",
+    "image": "https://picsum.photos/900/600?13",
+    "date": "2026-07-03",
+    "author": "SKV",
+    "readingTime": 3,
+    "featured": true
+  },
+  {
+    "title": "Статья 1",
+    "slug": "article-1",
+    "description": "Краткое описание статьи.",
+    "content": "<p>Тестовое содержимое статьи.</p>",
+    "image": "https://picsum.photos/700/500?1",
+    "date": "2026-07-03",
+    "author": "SKV",
+    "readingTime": 5,
+    "featured": false
+  },
+  {
+    "title": "Статья 2",
+    "slug": "article-2",
+    "description": "Краткое описание статьи.",
+    "content": "<p>Тестовое содержимое статьи.</p>",
+    "image": "https://picsum.photos/700/500?2",
+    "date": "2026-07-03",
+    "author": "SKV",
+    "readingTime": 5,
+    "featured": false
+  },
+  {
+    "title": "Статья 3",
+    "slug": "article-3",
+    "description": "Краткое описание статьи.",
+    "content": "<p>Тестовое содержимое статьи.</p>",
+    "image": "https://picsum.photos/700/500?3",
+    "date": "2026-07-03",
+    "author": "SKV",
+    "readingTime": 5,
+    "featured": false
+  }
+]

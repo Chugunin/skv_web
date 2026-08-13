@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Journal",
+    "slug": "journal"
+  },
+  {
+    "title": "Featured",
+    "slug": "featured"
+  },
+  {
+    "title": "Psychology",
+    "slug": "psychology"
+  },
+  {
+    "title": "Mind",
+    "slug": "mind"
+  },
+  {
+    "title": "Relationships",
+    "slug": "relationships"
+  }
+]
