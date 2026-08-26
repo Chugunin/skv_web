@@ -1,261 +1,32 @@
 ---
-import Container from "../layout/Container.astro";
+import Container from "@components/layout/Container.astro";
+import Reveal from "@components/decorative/Reveal.astro";
 import { getArchive } from "@lib/repository";
-
-const articles = await getArchive();
+import { categories } from "@data/categories";
+import { formatDate } from "@lib/utils";
+const articles=await getArchive();
 ---
-
-<section class="archive" data-reveal>
-
-    <Container>
-
-        <div class="header">
-
-            <h2>Архив материалов</h2>
-
-            <div class="buttons">
-
-                <button id="prev">
-
-                    ←
-
-                </button>
-
-                <button id="next">
-
-                    →
-
-                </button>
-
-            </div>
-
-        </div>
-
-        <div
-                class="slider"
-                id="archive-slider"
-        >
-
-            {
-
-                articles.map(article => (
-
-                        <a
-                                class="card"
-                                href={`/journal/${article.slug}`}
-                        >
-
-                            <img
-                                    src={article.image}
-                                    alt=""
-                            />
-
-                            <div class="content">
-
-                            <span>
-
-                                {article.category?.title}
-                            
-                            </span>
-                            
-                            <span>
-                            
-                                {article.date}
-                            
-                            </span>
-
-                                <h3>
-
-                                    {article.title}
-
-                                </h3>
-
-                                <p>
-
-                                    {article.description}
-
-                                </p>
-
-                            </div>
-
-                        </a>
-
-                ))
-
-            }
-
-        </div>
-
-    </Container>
-
+<section id="archive" class="archive">
+ <Container>
+  <Reveal class="archive__heading"><h2>Архив материалов</h2></Reveal>
+  <Reveal class="archive__filters" delay={60}>
+   <button type="button" class="is-active" data-filter="all">Все</button>
+   {categories.map(c=><button type="button" data-filter={c.slug}>{c.title}</button>)}
+  </Reveal>
+  <div class="archive__grid" data-archive-grid>
+   {articles.map((article,i)=><Reveal as="article" class="archive-item" delay={(i%4)*45}><a href={`/journal/${article.slug}/`} data-category={article.category?.slug ?? ""}><img src={article.image} alt="" loading="lazy" decoding="async"/><div class="archive-item__body"><span>{article.category?.title}</span><h3>{article.title}</h3><time datetime={article.date}>{formatDate(article.date)}</time></div></a></Reveal>)}
+  </div>
+ </Container>
 </section>
-
 <script>
-
-    const slider=document.querySelector("#archive-slider");
-
-    const prev=document.querySelector("#prev");
-
-    const next=document.querySelector("#next");
-
-    const offset=380;
-
-    prev?.addEventListener("click",()=>{
-
-        slider?.scrollBy({
-
-            left:-offset,
-
-            behavior:"smooth"
-
-        });
-
-    });
-
-    next?.addEventListener("click",()=>{
-
-        slider?.scrollBy({
-
-            left:offset,
-
-            behavior:"smooth"
-
-        });
-
-    });
-
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const cards = document.querySelectorAll<HTMLElement>('[data-archive-grid] [data-category]');
+  buttons.forEach(button => button.addEventListener('click', () => {
+    const filter = button.dataset.filter ?? 'all';
+    buttons.forEach(item => item.classList.toggle('is-active', item === button));
+    cards.forEach(card => { card.closest<HTMLElement>('.archive-item')!.hidden = filter !== 'all' && card.dataset.category !== filter; });
+  }));
 </script>
-
 <style>
-
-    .archive{
-
-        background:#2F2C2A;
-
-        padding:120px 0;
-
-    }
-
-    .header{
-
-        display:flex;
-
-        justify-content:space-between;
-
-        align-items:center;
-
-        margin-bottom:50px;
-
-    }
-
-    .header h2{
-
-        color:white;
-
-        font-weight:300;
-
-    }
-
-    .buttons{
-
-        display:flex;
-
-        gap:12px;
-
-    }
-
-    .buttons button{
-
-        width:52px;
-
-        height:52px;
-
-        border-radius:50%;
-
-        background:white;
-
-        transition:.25s;
-
-    }
-
-    .buttons button:hover{
-
-        transform:scale(1.08);
-
-    }
-
-    .slider{
-
-        display:flex;
-
-        gap:28px;
-
-        overflow-x:auto;
-
-        scrollbar-width:none;
-
-        scroll-behavior:smooth;
-
-        padding-bottom:10px;
-
-    }
-
-    .slider::-webkit-scrollbar{
-
-        display:none;
-
-    }
-
-    .card{
-
-        flex:0 0 340px;
-
-        background:white;
-
-        border-radius:8px;
-
-        overflow:hidden;
-
-    }
-
-    .card img{
-
-        width:100%;
-
-        height:240px;
-
-        object-fit:cover;
-
-    }
-
-    .content{
-
-        padding:24px;
-
-    }
-
-    .content span{
-
-        font-size:14px;
-
-        color:#777;
-
-    }
-
-    .content h3{
-
-        margin:18px 0;
-
-        font-size:24px;
-
-        font-weight:300;
-
-    }
-
-    .content p{
-
-        line-height:1.7;
-
-    }
-
+.archive{padding-bottom:var(--section-space);position:relative}.archive__heading{text-align:center}.archive h2{font-size:clamp(44px,4.7vw,68px)}.archive__filters{margin:24px auto 30px;display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.archive__filters button{min-height:34px;padding:7px 19px;border:1px solid var(--color-accent);border-radius:999px;font-size:10px;transition:background var(--transition-fast),color var(--transition-fast)}.archive__filters button.is-active,.archive__filters button:hover{background:#2d2b29;color:#fff;border-color:#2d2b29}.archive__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.archive-item[hidden]{display:none}.archive-item a{display:block;background:#2d2b29;color:#fff;height:100%}.archive-item img{width:100%;aspect-ratio:1.6/1;object-fit:cover}.archive-item__body{padding:14px 16px 16px;min-height:155px;display:flex;flex-direction:column}.archive-item__body>span{font-size:9px;text-transform:uppercase;color:#d2aa70}.archive-item h3{margin-top:8px;font-family:Manrope,sans-serif;font-size:12px;line-height:1.4;font-weight:500}.archive-item time{margin-top:auto;padding-top:16px;font-size:9px;color:rgba(255,255,255,.68)}@media(max-width:900px){.archive__grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.archive__grid{grid-template-columns:1fr}.archive__filters{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;margin-inline:calc(var(--container-padding)*-1);padding-inline:var(--container-padding)}.archive__filters button{white-space:nowrap}}
 </style>

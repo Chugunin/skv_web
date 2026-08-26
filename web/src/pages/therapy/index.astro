@@ -1,0 +1,25 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import TherapyHero from "@components/therapy/TherapyHero.astro";
+import Foundation from "@components/therapy/Foundation.astro";
+import Areas from "@components/therapy/Areas.astro";
+import MethodApproach from "@components/therapy/MethodApproach.astro";
+import Formats from "@components/therapy/Formats.astro";
+import Opportunities from "@components/therapy/Opportunities.astro";
+import Dialog from "@components/therapy/Dialog.astro";
+---
+<BaseLayout title="SKV Therapy — психологическая работа и консультирование" description="SKV Therapy — психологическая работа с восприятием, отношениями, внутренними сценариями и жизненными изменениями.">
+  <Header />
+  <main>
+    <TherapyHero />
+    <Foundation />
+    <Areas />
+    <MethodApproach />
+    <Formats />
+    <Opportunities />
+    <Dialog />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,31 @@
+---
+import Container from "@components/layout/Container.astro";
+import SectionHeading from "@components/common/SectionHeading.astro";
+import Reveal from "@components/decorative/Reveal.astro";
+const method=[
+ ["01","Замечать","Исследуем свои реакции, мысли и эмоциональные состояния."],
+ ["02","Понимать","Разбираем причины, внутренние механизмы и сформированные сценарии."],
+ ["03","Менять","Формируем новые способы восприятия и взаимодействия с собой и окружающим миром."]
+];
+const principles=[["◎","Глубина","Исследуем причины и закономерности."],["◉","Осознанность","Помогаем увидеть внутренние процессы."],["◔","Практичность","Фокусируемся на изменениях в реальной жизни."]];
+---
+<section class="method-approach">
+  <Container>
+    <div class="method-approach__grid">
+      <Reveal>
+        <SectionHeading>Методология работы</SectionHeading>
+        <div class="method">
+          {method.map(([num,title,text])=><article><span>{num}</span><h3>{title}</h3><p>{text}</p></article>)}
+        </div>
+      </Reveal>
+      <Reveal delay={120}>
+        <SectionHeading>Подход SKV</SectionHeading>
+        <p class="approach-copy">Мы рассматриваем человека как целостную систему, где связаны опыт, мышление, эмоции, отношения и способы адаптации. Работа строится не только вокруг отдельных проявлений, а вокруг понимания всей системы.</p>
+        <div class="principles">{principles.map(([icon,title,text])=><article><span aria-hidden="true">{icon}</span><div><strong>{title}</strong><p>{text}</p></div></article>)}</div>
+      </Reveal>
+    </div>
+  </Container>
+</section>
+<style>
+.method-approach{padding-bottom:var(--section-space)}.method-approach__grid{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(60px,9vw,150px)}.method{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:42px}.method article{position:relative;padding-right:16px}.method article:not(:last-child)::after{content:"";position:absolute;top:23px;right:-14px;width:42px;height:1px;background:var(--color-line)}.method span{font-family:"Cormorant Garamond",serif;color:var(--color-accent);font-size:34px}.method h3{margin-top:18px;font-family:Manrope,sans-serif;font-size:12px;font-weight:600}.method p,.approach-copy,.principles p{margin-top:14px;color:var(--color-muted);font-size:11px;line-height:1.7}.approach-copy{max-width:560px;font-size:13px;margin-top:34px}.principles{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:38px}.principles article{display:flex;gap:12px}.principles article>span{width:34px;height:34px;flex:0 0 34px;border:1px solid var(--color-accent);border-radius:50%;display:grid;place-items:center;color:var(--color-accent)}.principles strong{font-size:11px}.principles p{margin-top:6px;font-size:10px}@media(max-width:1050px){.method-approach__grid{grid-template-columns:1fr}.principles{max-width:700px}}@media(max-width:620px){.method{grid-template-columns:1fr}.method article:not(:last-child)::after{display:none}.principles{grid-template-columns:1fr}}
+</style>

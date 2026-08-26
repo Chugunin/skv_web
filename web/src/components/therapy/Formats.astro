@@ -1,0 +1,23 @@
+---
+import Container from "@components/layout/Container.astro";
+import SectionHeading from "@components/common/SectionHeading.astro";
+import Reveal from "@components/decorative/Reveal.astro";
+const formats=[
+ ["Диагностическая консультация","Определение запроса, состояния и подходящего формата работы. Первый шаг для новых клиентов."],
+ ["Индивидуальная терапия","Регулярное исследование внутренних процессов и устойчивых изменений."],
+ ["SKV Analysis","Психологический аудит личности. Комплексное исследование особенностей личности, восприятия и моделей поведения."],
+ ["SKV Intensive","Фокусированный разбор конкретного запроса. Глубокая работа с одной задачей за 3 часа."],
+ ["Долгосрочное сопровождение","Для глубоких изменений и важных жизненных этапов. Комплексная работа в течение нескольких месяцев."],
+ ["Психологический консалтинг","Аналитическая работа с жизненными, профессиональными и управленческими запросами."],
+ ["Работа с отношениями","Индивидуальные, парные и семейные запросы. Работа с коммуникацией, близостью и динамикой отношений."]
+];
+---
+<section class="formats">
+  <Container>
+    <Reveal><SectionHeading>Форматы работы</SectionHeading></Reveal>
+    <div class="formats__grid">{formats.map(([title,text],i)=><Reveal as="article" class="format" delay={(i%5)*40}><span aria-hidden="true">{String(i+1).padStart(2,"0")}</span><h3>{title}</h3><p>{text}</p></Reveal>)}</div>
+  </Container>
+</section>
+<style>
+.formats{padding-bottom:var(--section-space)}.formats__grid{display:grid;grid-template-columns:repeat(5,1fr);margin-top:40px;border-top:1px solid var(--color-border)}.format{padding:26px 26px 22px 0;margin-right:26px;border-right:1px solid var(--color-border)}.format:nth-child(5),.format:last-child{border-right:0}.format>span{color:var(--color-accent);font-size:11px}.format h3{margin-top:14px;font-family:Manrope,sans-serif;font-size:12px;line-height:1.4;font-weight:600}.format p{margin-top:16px;color:var(--color-muted);font-size:10.5px;line-height:1.75}@media(max-width:1080px){.formats__grid{grid-template-columns:repeat(3,1fr)}.format:nth-child(5){border-right:1px solid var(--color-border)}.format:nth-child(3n){border-right:0}}@media(max-width:680px){.formats__grid{grid-template-columns:1fr}.format{margin:0;padding-right:0;border-right:0;border-bottom:1px solid var(--color-border)}}
+</style>

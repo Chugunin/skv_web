@@ -1,0 +1,26 @@
+---
+import Container from "@components/layout/Container.astro";
+import Button from "@components/common/Button.astro";
+import Reveal from "@components/decorative/Reveal.astro";
+import PaintStroke from "@components/decorative/PaintStroke.astro";
+import GeometricFigure from "@components/decorative/GeometricFigure.astro";
+---
+<section class="therapy-hero" aria-labelledby="therapy-title">
+  <Container>
+    <div class="therapy-hero__grid">
+      <Reveal class="therapy-hero__content">
+        <h1 id="therapy-title">SKV Therapy</h1>
+        <p class="therapy-hero__lead">Работа с тем, как вы воспринимаете себя,<br />свои отношения и происходящее вокруг.</p>
+        <p class="therapy-hero__text">Психологическая работа, направленная на понимание внутренних процессов, изменение привычных сценариев и формирование большей внутренней устойчивости.</p>
+        <Button href="#dialog" variant="primary">Начать работу</Button>
+      </Reveal>
+      <Reveal class="therapy-hero__art" delay={120}>
+        <GeometricFigure class="therapy-hero__geometry" size={320} />
+        <PaintStroke src="/assets/reference/therapy-hero.webp" class="therapy-hero__stroke" />
+      </Reveal>
+    </div>
+  </Container>
+</section>
+<style>
+.therapy-hero{padding:clamp(58px,7vw,108px) 0 clamp(92px,10vw,150px);overflow:hidden}.therapy-hero__grid{display:grid;grid-template-columns:minmax(360px,.92fr) minmax(470px,1.08fr);gap:clamp(36px,6vw,96px);align-items:center}.therapy-hero__content{position:relative;z-index:2}.therapy-hero h1{font-size:clamp(72px,8.6vw,132px);font-weight:400;letter-spacing:-.045em;white-space:nowrap}.therapy-hero__lead{margin-top:26px;max-width:620px;font-size:clamp(18px,1.7vw,24px);line-height:1.45}.therapy-hero__text{margin:34px 0 38px;max-width:610px;color:var(--color-muted);font-size:14px;line-height:1.85}.therapy-hero__content :global(.button){min-width:200px}.therapy-hero__art{position:relative;min-height:500px}.therapy-hero__stroke{position:absolute;inset:0 -8% 0 -5%;height:100%}.therapy-hero__stroke :global(img){object-fit:cover!important;object-position:center!important}.therapy-hero__geometry{position:absolute;z-index:2;right:-2%;top:-11%}@media(max-width:980px){.therapy-hero__grid{grid-template-columns:1fr}.therapy-hero h1{white-space:normal}.therapy-hero__art{min-height:460px;order:-1}.therapy-hero__stroke{inset:0}.therapy-hero__geometry{right:0}}@media(max-width:620px){.therapy-hero{padding-top:36px}.therapy-hero__art{min-height:330px}.therapy-hero__geometry{width:190px;height:190px}.therapy-hero__lead br{display:none}}
+</style>

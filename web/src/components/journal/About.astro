@@ -1,119 +1,19 @@
 ---
-import Container from "../layout/Container.astro";
+import Container from "@components/layout/Container.astro";
+import Reveal from "@components/decorative/Reveal.astro";
+import GeometricFigure from "@components/decorative/GeometricFigure.astro";
 ---
-
-<section class="about" data-reveal>
-
-    <Container>
-    
-        <div class="about__container">
-    
-            <div class="about__card">
-    
-                <h2>
-    
-                    О журнале
-    
-                </h2>
-    
-                <p>
-    
-                    SKV Journal объединяет экспертные материалы
-                    о том, как формируется наше восприятие,
-                    почему мы реагируем определённым образом
-                    и какие процессы влияют на качество жизни.
-    
-                </p>
-    
-            </div>
-    
-        </div>
-        
-    </Container>
-
+<section class="journal-about">
+  <Container>
+    <div class="journal-about__grid">
+      <Reveal class="journal-about__art"><GeometricFigure size={245}/></Reveal>
+      <Reveal class="journal-about__copy" delay={100}>
+        <h2>О журнале</h2>
+        <p>SKV Journal объединяет экспертные материалы о том, как формируется наше восприятие, почему мы реагируем определенным образом и какие процессы влияют на качество жизни.</p>
+      </Reveal>
+    </div>
+  </Container>
 </section>
-
 <style>
-
-    .about{
-
-        background:#F6F2EC;
-
-        padding:120px 0;
-
-    }
-
-    .about__container{
-
-        display:flex;
-
-        justify-content:center;
-
-    }
-
-    .about__card{
-
-        width:720px;
-
-        background:white;
-
-        padding:70px;
-
-        border-radius:4px;
-
-        box-shadow:
-                0 12px 40px rgba(0,0,0,.05);
-
-    }
-
-    .about h2{
-
-        font-size:48px;
-
-        font-weight:300;
-
-        margin-bottom:34px;
-
-    }
-
-    .about p{
-
-        font-size:20px;
-
-        line-height:1.9;
-
-        color:#444;
-
-    }
-
-    @media(max-width:900px){
-
-        .about{
-
-            padding:80px 0;
-
-        }
-
-        .about__card{
-
-            width:100%;
-
-            padding:42px;
-
-        }
-
-        .about h2{
-
-            font-size:34px;
-
-        }
-
-        .about p{
-
-            font-size:17px;
-
-        }
-
-    }
-
+.journal-about{padding:10px 0 var(--section-space)}.journal-about__grid{display:grid;grid-template-columns:.75fr 1.25fr;align-items:center;gap:60px}.journal-about__art{display:grid;place-items:center;min-height:210px}.journal-about__copy{border-left:1px solid var(--color-accent);padding:10px 0 10px 38px;max-width:720px}.journal-about h2{font-size:clamp(46px,5vw,72px)}.journal-about p{margin-top:24px;color:var(--color-muted);max-width:650px;font-size:14px;line-height:1.9}@media(max-width:760px){.journal-about__grid{grid-template-columns:1fr}.journal-about__art{display:none}.journal-about__copy{padding-left:24px}}
 </style>
