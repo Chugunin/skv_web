@@ -12,7 +12,7 @@ const formattedDate = formatDate(date);
 ---
 
 <div class="meta">
-  {formattedDate && <span>{formattedDate}</span>}
+  {formattedDate && <time datetime={date}>{formattedDate}</time>}
   {author && <span>{author}</span>}
   {readingTime && <span>{readingTime} мин</span>}
 </div>

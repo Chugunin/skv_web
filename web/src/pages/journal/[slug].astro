@@ -44,7 +44,7 @@ const jsonLd = {
   ...(imageUrl ? { image: [imageUrl] } : {})
 };
 ---
-<BaseLayout title={title} description={description} image={seoImage} canonical={canonical} ogType="article">
+<BaseLayout title={title} description={description} image={seoImage} canonical={canonical} ogType="article" preloadImage={article.image || undefined}>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
   {publishedIso && <meta slot="head" property="article:published_time" content={publishedIso} />}
   {article.category?.title && <meta slot="head" property="article:section" content={article.category.title} />}

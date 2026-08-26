@@ -72,8 +72,8 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
     }
 
     if (event.key === "Tab") {
-      const focusable = Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
-      if (!focusable.length) return;
+      const panelFocusable = Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+      const focusable = [toggle, ...panelFocusable];
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       if (event.shiftKey && document.activeElement === first) {

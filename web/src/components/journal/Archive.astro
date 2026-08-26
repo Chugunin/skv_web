@@ -2,10 +2,18 @@
 import Container from "@components/layout/Container.astro";
 import Reveal from "@components/decorative/Reveal.astro";
 import ArticleCard from "@components/article/ArticleCard.astro";
-import { getArchive, getCategories } from "@lib/repository";
-const [articles, categories] = await Promise.all([getArchive(), getCategories()]);
+import { getArchive } from "@lib/repository";
+
+const articles = await getArchive();
+const categories = Array.from(
+  new Map(
+    articles
+      .filter(article => article.category)
+      .map(article => [article.category!.slug, article.category!])
+  ).values()
+);
 ---
-<section id="archive" class="archive">
+<section id="archive" class="archive" data-archive>
  <Container>
   <Reveal class="archive__heading"><h2>Архив материалов</h2></Reveal>
   <Reveal class="archive__filters" delay={60}>
@@ -21,9 +29,11 @@ const [articles, categories] = await Promise.all([getArchive(), getCategories()]
  </Container>
 </section>
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
-  const cards = document.querySelectorAll<HTMLElement>('[data-archive-grid] [data-category]');
-  const empty = document.querySelector<HTMLElement>('[data-archive-empty]');
+  const archive = document.querySelector<HTMLElement>('[data-archive]');
+  const buttons = archive?.querySelectorAll<HTMLButtonElement>('[data-filter]') ?? [];
+  const cards = archive?.querySelectorAll<HTMLElement>('[data-archive-grid] [data-category]') ?? [];
+  const empty = archive?.querySelector<HTMLElement>('[data-archive-empty]');
+
   buttons.forEach(button => button.addEventListener('click', () => {
     const filter = button.dataset.filter ?? 'all';
     buttons.forEach(item => {
