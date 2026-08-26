@@ -32,6 +32,7 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
         type="text"
         autocomplete={therapy ? "email" : "tel"}
         required
+        minlength="3"
         maxlength="120"
         aria-describedby={`${formId}-contact-help`}
       />
@@ -62,61 +63,58 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
   </div>
 
   <input type="hidden" name="source" value={therapy ? "therapy" : "home"} />
+  <input type="hidden" name="startedAt" value="" data-form-started-at />
 
   <Button type="submit" variant="primary">Отправить заявку</Button>
   <p class="contact-form__status" data-form-status role="status" aria-live="polite"></p>
 </form>
 
 <script>
+  import { validateContactPayload } from "@lib/contact/validation";
+
   const forms = document.querySelectorAll<HTMLFormElement>("[data-contact-form]");
 
-  const messages: Record<string, string> = {
-    name: "Укажите имя (минимум 2 символа).",
-    contact: "Укажите контакт для обратной связи.",
-    email: "Укажите корректный email.",
-    message: "Опишите запрос минимум в 10 символах."
-  };
-
-  function setError(form: HTMLFormElement, field: HTMLInputElement | HTMLTextAreaElement, message = "") {
-    const error = form.querySelector<HTMLElement>(`[data-error-for="${field.name}"]`);
-    field.toggleAttribute("aria-invalid", Boolean(message));
+  function setError(form: HTMLFormElement, fieldName: string, message = "") {
+    const field = form.elements.namedItem(fieldName);
+    const error = form.querySelector<HTMLElement>(`[data-error-for="${fieldName}"]`);
+    if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) {
+      field.toggleAttribute("aria-invalid", Boolean(message));
+    }
     if (error) error.textContent = message;
   }
 
-  function validate(form: HTMLFormElement) {
-    let valid = true;
-    const fields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]");
-
-    fields.forEach((field) => {
-      setError(form, field);
-      if (!field.checkValidity()) {
-        valid = false;
-        setError(form, field, messages[field.name] ?? "Проверьте значение поля.");
-      }
-    });
-
-    return valid;
+  function clearErrors(form: HTMLFormElement) {
+    ["name", "contact", "email", "message"].forEach(name => setError(form, name));
   }
 
   forms.forEach((form) => {
     const status = form.querySelector<HTMLElement>("[data-form-status]");
     const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const startedAt = form.querySelector<HTMLInputElement>("[data-form-started-at]");
+    if (startedAt) startedAt.value = String(Date.now());
 
     form.addEventListener("input", (event) => {
       const field = event.target;
-      if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) setError(form, field);
+      if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) setError(form, field.name);
     });
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      if (!validate(form)) {
+      clearErrors(form);
+
+      const raw = Object.fromEntries(new FormData(form).entries());
+      const validation = validateContactPayload(raw);
+
+      if (!validation.valid) {
+        if (validation.spam) {
+          if (status) status.textContent = "Не удалось отправить заявку. Попробуйте ещё раз позже.";
+          return;
+        }
+        Object.entries(validation.errors).forEach(([name, message]) => setError(form, name, message));
         form.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
         if (status) status.textContent = "Проверьте отмеченные поля.";
         return;
       }
-
-      const data = new FormData(form);
-      if (String(data.get("website") ?? "").trim()) return;
 
       const endpoint = form.dataset.endpoint?.trim();
       if (!endpoint) {
@@ -129,18 +127,26 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
         form.setAttribute("aria-busy", "true");
         if (status) status.textContent = "Отправляем заявку…";
 
-        const payload = Object.fromEntries(data.entries());
-        delete payload.website;
-
         const response = await fetch(endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(validation.payload)
         });
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const responseBody = await response.json().catch(() => null) as { message?: string; errors?: Record<string, string> } | null;
+        if (!response.ok) {
+          if (response.status === 400 && responseBody?.errors) {
+            Object.entries(responseBody.errors).forEach(([name, message]) => setError(form, name, message));
+            form.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
+            if (status) status.textContent = responseBody.message || "Проверьте отмеченные поля.";
+            return;
+          }
+          throw new Error(`HTTP ${response.status}`);
+        }
+
         form.reset();
-        if (status) status.textContent = "Заявка отправлена. Мы свяжемся с вами по указанному контакту.";
+        if (startedAt) startedAt.value = String(Date.now());
+        if (status) status.textContent = responseBody?.message || "Заявка отправлена. Мы свяжемся с вами по указанному контакту.";
       } catch (error) {
         console.error("Contact form submit failed", error);
         if (status) status.textContent = "Не удалось отправить заявку. Попробуйте ещё раз позже.";

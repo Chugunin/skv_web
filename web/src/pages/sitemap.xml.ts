@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { getArticles } from "@lib/repository";
 import { config } from "@lib/config";
+import { toIsoDate } from "@lib/utils";
 
 const staticRoutes = ["/", "/therapy/", "/journal/"];
 
@@ -16,7 +17,7 @@ export const GET: APIRoute = async () => {
     ...staticRoutes.map(path => ({ loc: new URL(path, config.siteUrl).toString() })),
     ...articles.map(article => ({
       loc: new URL(`/journal/${article.slug}/`, config.siteUrl).toString(),
-      lastmod: article.date
+      lastmod: toIsoDate(article.date)
     }))
   ];
 

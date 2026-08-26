@@ -9,6 +9,7 @@ import ArticleCard from "@components/article/ArticleCard.astro";
 import ArticleContent from "@components/article/ArticleContent.astro";
 import { getArticles, getArticleBySlug } from "@lib/repository";
 import { config } from "@lib/config";
+import { toIsoDate } from "@lib/utils";
 
 export async function getStaticPaths() {
   const articles = await getArticles();
@@ -30,13 +31,13 @@ const seoImage = article.seoImage || article.image;
 const canonical = `/journal/${article.slug}/`;
 const canonicalUrl = new URL(canonical, config.siteUrl).toString();
 const imageUrl = seoImage ? new URL(seoImage, config.siteUrl).toString() : undefined;
+const publishedIso = toIsoDate(article.date);
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: article.title,
   description,
-  datePublished: article.date,
-  dateModified: article.date,
+  ...(publishedIso ? { datePublished: publishedIso, dateModified: publishedIso } : {}),
   mainEntityOfPage: canonicalUrl,
   author: { "@type": "Organization", name: article.author || "SKV" },
   publisher: { "@type": "Organization", name: "SKV", url: config.siteUrl },
@@ -45,7 +46,7 @@ const jsonLd = {
 ---
 <BaseLayout title={title} description={description} image={seoImage} canonical={canonical} ogType="article">
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
-  <meta slot="head" property="article:published_time" content={article.date} />
+  {publishedIso && <meta slot="head" property="article:published_time" content={publishedIso} />}
   {article.category?.title && <meta slot="head" property="article:section" content={article.category.title} />}
   <Header />
   <main id="main-content">

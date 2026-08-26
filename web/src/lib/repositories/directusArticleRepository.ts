@@ -7,12 +7,14 @@ import * as local from "./articleRepository";
 import { categories as localCategories } from "@data/categories";
 
 const strict = import.meta.env.DIRECTUS_STRICT === "true";
+let buildArticlesPromise: Promise<Article[]> | undefined;
+let buildCategoriesPromise: Promise<Category[]> | undefined;
 
 function fallbackWarning(label: string): void {
   console.warn(`[SKV] Directus недоступен (${label}): используются локальные fixtures.`);
 }
 
-async function fromDirectus(): Promise<Article[]> {
+async function requestArticles(): Promise<Article[]> {
   try {
     const data = await directus.request(readItems("articles", {
       filter: { status: { _eq: "published" } } as any,
@@ -31,6 +33,15 @@ async function fromDirectus(): Promise<Article[]> {
   }
 }
 
+async function fromDirectus(): Promise<Article[]> {
+  // During a static production build the same collection is requested by several
+  // components/routes. Memoizing only outside dev avoids duplicate CMS calls while
+  // preserving live content updates during `astro dev`.
+  if (import.meta.env.DEV) return requestArticles();
+  buildArticlesPromise ??= requestArticles();
+  return buildArticlesPromise;
+}
+
 export async function getArticles(): Promise<Article[]> {
   return fromDirectus();
 }
@@ -42,15 +53,16 @@ export async function getFeaturedPosts(): Promise<Article[]> {
 }
 
 export async function getArchive(): Promise<Article[]> {
-  const articles = await fromDirectus();
-  return articles.filter(article => !article.featured);
+  // "Archive" is the full published library. Featured is a presentation flag and
+  // must not remove an article from the archive/filtering section.
+  return fromDirectus();
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | undefined> {
   return (await fromDirectus()).find(article => article.slug === slug);
 }
 
-export async function getCategories(): Promise<Category[]> {
+async function requestCategories(): Promise<Category[]> {
   try {
     const data = await directus.request(readItems("categories", {
       sort: ["title"] as any,
@@ -67,4 +79,10 @@ export async function getCategories(): Promise<Category[]> {
     fallbackWarning("categories");
     return localCategories;
   }
+}
+
+export async function getCategories(): Promise<Category[]> {
+  if (import.meta.env.DEV) return requestCategories();
+  buildCategoriesPromise ??= requestCategories();
+  return buildCategoriesPromise;
 }

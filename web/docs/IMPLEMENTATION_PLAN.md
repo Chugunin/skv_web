@@ -101,3 +101,12 @@
 - Этап F / keyboard QA: мобильное меню дополнено focus containment при Tab/Shift+Tab и возвратом фокуса по Escape.
 - Добавлен `docs/QA_STAGE6.md` с ручными проверками LCP/CLS и keyboard navigation.
 - Production build по-прежнему должен быть подтверждён в рабочем окружении пользователя, где установлен полный `node_modules`.
+
+## Прогресс 2026-08-26 — проход 7
+
+- Этап D / формы: клиентская и будущая серверная валидация унифицированы в `src/lib/contact/validation.ts`; добавлены нормализация payload, honeypot, защита от мгновенной bot-submit и поддержка field errors от будущего API.
+- Runtime `POST /api/contact` намеренно не добавлялся без выбранного Astro server adapter: текущий сайт остаётся статическим, а корректная серверная реализация зависит от production hosting и решения OQ-02.
+- Этап D / Journal: `featured` теперь является только признаком блока «Актуальные материалы» и не исключает публикацию из общего Архива; это сохраняет полный опубликованный каталог.
+- CMS-запросы articles/categories мемоизируются во время production static build, чтобы несколько компонентов и article routes не повторяли одинаковые запросы к Directus. В `astro dev` memoization отключена.
+- Этап F / SEO robustness: добавлена безопасная обработка дат; некорректные значения не формируют `Invalid Date`, `article:published_time`, JSON-LD date или sitemap `lastmod`.
+- Добавлены `docs/PRODUCTION_READINESS.md` и `docs/QA_STAGE7.md`, где явно зафиксированы deployment/runtime блокеры и последовательность production acceptance.

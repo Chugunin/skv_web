@@ -1,79 +1,22 @@
 ---
 import { formatDate } from "@lib/utils";
 
-interface Props{
-
-    date:string;
-
-    author?:string;
-
-    readingTime?:number;
-
+interface Props {
+  date: string;
+  author?: string;
+  readingTime?: number;
 }
 
-const {
-
-    date,
-
-    author,
-
-    readingTime
-
-}=Astro.props;
+const { date, author, readingTime } = Astro.props;
+const formattedDate = formatDate(date);
 ---
 
 <div class="meta">
-
-    <span>
-
-        {formatDate(date)}
-
-    </span>
-
-    {
-
-        author && (
-
-                    <span>
-
-                {author}
-
-            </span>
-
-        )
-
-    }
-
-    {
-
-        readingTime && (
-
-                    <span>
-
-                {readingTime} мин
-
-            </span>
-
-        )
-
-    }
-
+  {formattedDate && <span>{formattedDate}</span>}
+  {author && <span>{author}</span>}
+  {readingTime && <span>{readingTime} мин</span>}
 </div>
 
 <style>
-
-    .meta{
-
-        display:flex;
-
-        gap:22px;
-
-        flex-wrap:wrap;
-
-        color:#777;
-
-        font-size:14px;
-
-    }
-
+  .meta { display: flex; gap: 22px; flex-wrap: wrap; color: #777; font-size: 14px; }
 </style>
