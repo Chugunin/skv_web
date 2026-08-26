@@ -1,0 +1,38 @@
+:root {
+  /* Palette: значения основаны на светлой warm-white / graphite / champagne системе из ТЗ и референсов. */
+  --color-background: #f7f4ef;
+  --color-surface: #fffdf9;
+  --color-text: #171614;
+  --color-muted: #69645e;
+  --color-accent: #b9843f;
+  --color-accent-strong: #9f6e31;
+  --color-line: rgba(185, 132, 63, 0.42);
+  --color-border: rgba(23, 22, 20, 0.12);
+  --color-overlay: rgba(247, 244, 239, 0.86);
+
+  --container-width: 1440px;
+  --container-padding: clamp(20px, 4vw, 64px);
+  --content-width: 760px;
+
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 88px;
+  --space-9: 120px;
+  --space-10: 160px;
+
+  --section-space: clamp(88px, 9vw, 152px);
+  --header-height: 92px;
+
+  --radius-sm: 2px;
+  --radius-md: 6px;
+
+  --shadow-soft: 0 18px 60px rgba(23, 22, 20, 0.06);
+
+  --transition-fast: 180ms ease;
+  --transition-base: 320ms ease;
+}

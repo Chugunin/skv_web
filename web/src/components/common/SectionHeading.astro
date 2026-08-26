@@ -1,0 +1,12 @@
+---
+interface Props { as?: "h1" | "h2" | "h3"; class?: string; }
+const { as = "h2", class: className = "" } = Astro.props;
+const Tag = as;
+---
+<div class={`section-heading ${className}`}>
+  <Tag><slot /></Tag>
+</div>
+<style>
+  .section-heading { display: inline-block; }
+  .section-heading::after { content: ""; display: block; width: min(100%, 210px); height: 1px; margin-top: 10px; background: var(--color-accent); }
+</style>

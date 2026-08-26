@@ -1,0 +1,6 @@
+---
+interface Props { name:"target"|"heart"|"lock"|"person"|"growth"; }
+const { name } = Astro.props;
+---
+<svg class="line-icon" viewBox="0 0 48 48" fill="none" aria-hidden="true">{name === "target" && <><circle cx="22" cy="26" r="13"/><circle cx="22" cy="26" r="7"/><path d="m22 26 17-17M31 9h8v8"/></>}{name === "heart" && <path d="M24 39 8.5 24C2 17.8 5.7 8 14.3 8 19.6 8 22.3 12 24 15c1.7-3 4.4-7 9.7-7C42.3 8 46 17.8 39.5 24L24 39Z"/>}{name === "lock" && <><rect x="10" y="20" width="28" height="21" rx="2"/><path d="M16 20v-5a8 8 0 0 1 16 0v5M24 28v6"/></>}{name === "person" && <><circle cx="24" cy="14" r="7"/><path d="M10 41c0-9 5.5-14 14-14s14 5 14 14H10Z"/></>}{name === "growth" && <><path d="m7 37 10-10 7 7 17-20"/><path d="M31 14h10v10"/></>}</svg>
+<style>.line-icon{width:48px;height:48px;stroke:var(--color-accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}</style>

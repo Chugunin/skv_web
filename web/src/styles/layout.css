@@ -1,0 +1,11 @@
+.container {
+  width: min(calc(100% - (var(--container-padding) * 2)), var(--container-width));
+  margin-inline: auto;
+}
+
+.section {
+  position: relative;
+  padding-block: var(--section-space);
+}
+
+.flow > * + * { margin-top: var(--flow-space, var(--space-4)); }

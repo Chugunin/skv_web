@@ -1,0 +1,37 @@
+---
+interface Props {
+  href?: string;
+  variant?: "primary" | "outline" | "text";
+  type?: "button" | "submit" | "reset";
+  class?: string;
+}
+const { href, variant = "outline", type = "button", class: className = "" } = Astro.props;
+const classes = `button button--${variant} ${className}`;
+---
+
+{href ? (
+  <a class={classes} href={href}><slot /><span aria-hidden="true" class="button__arrow">→</span></a>
+) : (
+  <button class={classes} type={type}><slot /><span aria-hidden="true" class="button__arrow">→</span></button>
+)}
+
+<style>
+  .button {
+    min-height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 11px 18px;
+    border: 1px solid var(--color-accent);
+    font-size: 13px;
+    font-weight: 500;
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  }
+  .button--primary { background: var(--color-accent); color: var(--color-surface); }
+  .button--outline { background: transparent; color: var(--color-text); }
+  .button--text { border-color: transparent; padding-inline: 0; min-height: auto; color: var(--color-accent-strong); }
+  .button:hover { background: var(--color-accent-strong); border-color: var(--color-accent-strong); color: var(--color-surface); }
+  .button--text:hover { background: transparent; color: var(--color-text); }
+  .button__arrow { font-size: 21px; line-height: 1; font-weight: 400; }
+</style>
