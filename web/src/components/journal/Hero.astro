@@ -1,26 +1,5 @@
 ---
-import Container from "@components/layout/Container.astro";
-import Button from "@components/common/Button.astro";
-import Reveal from "@components/decorative/Reveal.astro";
-import PaintStroke from "@components/decorative/PaintStroke.astro";
-import GeometricFigure from "@components/decorative/GeometricFigure.astro";
+import Container from "@components/layout/Container.astro";import Button from "@components/common/Button.astro";import Reveal from "@components/decorative/Reveal.astro";import PaintStroke from "@components/decorative/PaintStroke.astro";import GeometricFigure from "@components/decorative/GeometricFigure.astro";
 ---
-<section class="journal-hero" aria-labelledby="journal-title">
-  <Container>
-    <div class="journal-hero__grid">
-      <Reveal class="journal-hero__content">
-        <h1 id="journal-title">SKV Journal</h1>
-        <p class="journal-hero__eyebrow">Статьи и исследования о психологии,<br />восприятии и качестве жизни</p>
-        <p class="journal-hero__text">Материалы SKV о внутренних процессах человека, отношениях и способах лучше понимать себя и окружающий мир.</p>
-        <Button href="#articles" variant="outline">Смотреть материалы</Button>
-      </Reveal>
-      <Reveal class="journal-hero__art" delay={100}>
-        <GeometricFigure class="journal-hero__geometry" size={285}/>
-        <PaintStroke src="/assets/reference/journal-hero.webp" class="journal-hero__stroke" />
-      </Reveal>
-    </div>
-  </Container>
-</section>
-<style>
-.journal-hero{padding:clamp(58px,7vw,105px) 0 clamp(80px,8vw,122px);overflow:hidden}.journal-hero__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,6vw,90px);align-items:center}.journal-hero h1{font-size:clamp(78px,9.5vw,145px);font-weight:400;letter-spacing:-.05em}.journal-hero__eyebrow{margin-top:22px;text-transform:uppercase;letter-spacing:.04em;font-size:14px;line-height:1.55}.journal-hero__text{margin:28px 0 34px;max-width:560px;color:var(--color-muted);font-size:14px;line-height:1.8}.journal-hero__content :global(.button){min-width:240px}.journal-hero__art{position:relative;min-height:440px}.journal-hero__stroke{position:absolute;inset:0 -5% 0 0}.journal-hero__stroke :global(img){object-fit:cover!important}.journal-hero__geometry{position:absolute;z-index:2;left:6%;top:-12%}@media(max-width:900px){.journal-hero__grid{grid-template-columns:1fr}.journal-hero__art{order:-1;min-height:360px}}@media(max-width:620px){.journal-hero__art{min-height:280px}.journal-hero__geometry{width:170px;height:170px}.journal-hero__eyebrow br{display:none}}
-</style>
+<section class="journal-hero"><Container><div class="journal-hero__grid"><Reveal class="journal-hero__copy"><h1>SKV Journal</h1><p class="journal-hero__lead">Статьи и исследования о психологии, восприятии и качестве жизни.</p><p class="journal-hero__text">Материалы SKV о внутренних процессах человека, отношениях и способах лучше понимать себя и окружающий мир.</p><Button href="#articles" variant="outline">Смотреть материалы</Button></Reveal><Reveal class="journal-hero__art" delay={90}><PaintStroke src="/assets/reference/journal-hero.webp" fit="cover" width={524} height={370} loading="eager" fetchpriority="high"/><GeometricFigure class="journal-hero__figure" size={250}/></Reveal></div></Container></section>
+<style>.journal-hero{padding:clamp(55px,7vw,100px) 0 80px}.journal-hero__grid{display:grid;grid-template-columns:.85fr 1.15fr;gap:clamp(60px,7vw,120px);align-items:center}.journal-hero h1{font-size:clamp(68px,7.2vw,116px);letter-spacing:-.035em;white-space:nowrap}.journal-hero__lead{margin-top:22px;font-size:17px;line-height:1.5;text-transform:uppercase;letter-spacing:.035em;max-width:560px}.journal-hero__text{margin-top:26px;max-width:540px;font-size:14px;color:var(--color-muted);line-height:1.8}.journal-hero__copy :global(.button){margin-top:32px;min-width:220px}.journal-hero__art{position:relative;min-height:410px;margin-right:calc(var(--container-padding)*-1)}.journal-hero__art :global(.paint-stroke),.journal-hero__art :global(img){width:100%;height:100%}.journal-hero__figure{position:absolute;left:8%;top:-30px;z-index:2}@media(max-width:900px){.journal-hero__grid{grid-template-columns:1fr}.journal-hero h1{white-space:normal}.journal-hero__art{min-height:320px;margin-left:8%}}@media(max-width:560px){.journal-hero__art{min-height:250px;margin-left:0}.journal-hero__lead{font-size:14px}}</style>

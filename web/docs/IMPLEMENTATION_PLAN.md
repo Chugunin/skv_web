@@ -91,3 +91,13 @@
 - Исправлен broken route Footer `/privacy/`: добавлена временная `noindex`-страница. Это не юридическая политика; перед production требуется утвержденный текст.
 - Добавлен `docs/QA_STAGE5.md` с ручным acceptance checklist и явным перечнем незакрытых production-блокеров.
 - На Главной убран жесткий border-разделитель перед контактным блоком, чтобы лучше соблюдать требование единого бесшовного светлого пространства.
+
+## Прогресс 2026-08-26 — проход 6
+
+- Этап F / performance: hero-графика Главной, Therapy и Journal получила приоритетную загрузку; остальные декоративные изображения остаются lazy.
+- Reference images и Journal cards/cover получили intrinsic dimensions для снижения layout shift.
+- Google Fonts вынесены из CSS `@import` в `<head>` с preconnect; это уменьшает цепочку блокирующих запросов. Self-host не выполнялся, потому что font assets не входят в исходные материалы.
+- Добавлен `theme-color` и progressive `content-visibility` для нижеэкранных секций.
+- Этап F / keyboard QA: мобильное меню дополнено focus containment при Tab/Shift+Tab и возвратом фокуса по Escape.
+- Добавлен `docs/QA_STAGE6.md` с ручными проверками LCP/CLS и keyboard navigation.
+- Production build по-прежнему должен быть подтверждён в рабочем окружении пользователя, где установлен полный `node_modules`.

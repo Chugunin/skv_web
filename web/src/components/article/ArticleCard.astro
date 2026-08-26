@@ -10,7 +10,7 @@ interface Props {
 const { article, compact = false } = Astro.props;
 ---
 <a class:list={["article-card", { "article-card--compact": compact }]} href={`/journal/${article.slug}/`}>
-  {article.image && <img src={article.image} alt="" loading="lazy" decoding="async" />}
+  {article.image && <img src={article.image} alt="" width="640" height="413" loading="lazy" decoding="async" />}
   <div class="article-card__body">
     {article.category?.title && <span class="article-card__category">{article.category.title}</span>}
     <h3>{article.title}</h3>

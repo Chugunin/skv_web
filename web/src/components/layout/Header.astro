@@ -59,7 +59,28 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
 
   toggle?.addEventListener("click", () => toggle.getAttribute("aria-expanded") === "true" ? close() : open());
   panel?.addEventListener("click", (event) => { if ((event.target as HTMLElement).closest("a")) close(); });
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape" && toggle?.getAttribute("aria-expanded") === "true") close(true); });
+  document.addEventListener("keydown", (event) => {
+    if (toggle?.getAttribute("aria-expanded") !== "true" || !panel) return;
+
+    if (event.key === "Escape") {
+      close(true);
+      return;
+    }
+
+    if (event.key === "Tab") {
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  });
   window.addEventListener("resize", () => { if (window.innerWidth > 900) close(); });
 </script>
 

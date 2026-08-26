@@ -56,3 +56,12 @@ input, textarea, select { color: inherit; }
 }
 .skip-link:focus { transform: translateY(0); }
 html.mobile-menu-open { overflow: hidden; }
+
+/* Performance baseline: keep below-the-fold sections cheap to render without changing layout semantics. */
+@supports (content-visibility: auto) {
+  main > section:not(:first-child),
+  main > article:not(:first-child) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 760px;
+  }
+}

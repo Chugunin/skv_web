@@ -1,8 +1,40 @@
 ---
-interface Props { src:string; alt?:string; class?:string; position?:string; fit?:"cover"|"contain"; }
-const { src, alt = "", class: className = "", position = "center", fit = "contain" } = Astro.props;
+interface Props {
+  src: string;
+  alt?: string;
+  class?: string;
+  position?: string;
+  fit?: "cover" | "contain";
+  width?: number;
+  height?: number;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const {
+  src,
+  alt = "",
+  class: className = "",
+  position = "center",
+  fit = "contain",
+  width,
+  height,
+  loading = "lazy",
+  fetchpriority = "auto"
+} = Astro.props;
 ---
-<div class={`paint-stroke ${className}`} aria-hidden={alt ? undefined : "true"}><img src={src} alt={alt} loading="lazy" decoding="async" style={`object-position:${position};object-fit:${fit}`} /></div>
+<div class={`paint-stroke ${className}`} aria-hidden={alt ? undefined : "true"}>
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding="async"
+    fetchpriority={fetchpriority}
+    style={`object-position:${position};object-fit:${fit}`}
+  />
+</div>
 <style>
 .paint-stroke{position:relative;pointer-events:none}.paint-stroke img{width:100%;height:100%;display:block}[data-reveal] .paint-stroke{clip-path:inset(0 100% 0 0);transition:clip-path 980ms cubic-bezier(.22,.72,.22,1) 120ms}[data-reveal].is-visible .paint-stroke{clip-path:inset(0 0 0 0)}
 </style>
