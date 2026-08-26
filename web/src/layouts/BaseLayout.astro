@@ -1,5 +1,6 @@
 ---
 import "@styles/globals.css";
+import { config } from "@lib/config";
 
 interface Props {
   title?: string;
@@ -7,15 +8,20 @@ interface Props {
   canonical?: string;
   image?: string;
   noindex?: boolean;
+  ogType?: "website" | "article";
 }
+
 const {
   title = "SKV",
   description = "SKV — психология восприятия и качества жизни.",
   canonical,
   image,
-  noindex = false
+  noindex = false,
+  ogType = "website"
 } = Astro.props;
-const canonicalUrl = canonical ? new URL(canonical, Astro.url.origin).toString() : Astro.url.toString();
+
+const canonicalUrl = new URL(canonical ?? Astro.url.pathname, config.siteUrl).toString();
+const imageUrl = image ? new URL(image, config.siteUrl).toString() : undefined;
 ---
 <!doctype html>
 <html lang="ru">
@@ -27,12 +33,17 @@ const canonicalUrl = canonical ? new URL(canonical, Astro.url.origin).toString()
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content={config.siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
-    {image && <meta property="og:image" content={image} />}
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    <meta name="twitter:card" content={imageUrl ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {imageUrl && <meta name="twitter:image" content={imageUrl} />}
     <slot name="head" />
   </head>
   <body>

@@ -1,0 +1,36 @@
+---
+import type { Article } from "@/models/article";
+import { formatDate } from "@lib/utils";
+
+interface Props {
+  article: Article;
+  compact?: boolean;
+}
+
+const { article, compact = false } = Astro.props;
+---
+<a class:list={["article-card", { "article-card--compact": compact }]} href={`/journal/${article.slug}/`}>
+  {article.image && <img src={article.image} alt="" loading="lazy" decoding="async" />}
+  <div class="article-card__body">
+    {article.category?.title && <span class="article-card__category">{article.category.title}</span>}
+    <h3>{article.title}</h3>
+    {!compact && <p>{article.description}</p>}
+    {article.date && <time datetime={article.date}>{formatDate(article.date)}</time>}
+  </div>
+</a>
+
+<style>
+.article-card{display:flex;flex-direction:column;height:100%;background:#2d2b29;color:#fff;overflow:hidden;transition:transform var(--transition-fast),box-shadow var(--transition-fast)}
+.article-card:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(28,25,22,.12)}
+.article-card img{width:100%;aspect-ratio:1.55/1;object-fit:cover;filter:saturate(.72)}
+.article-card__body{display:flex;flex:1;flex-direction:column;padding:18px 20px 20px;min-height:178px}
+.article-card__category{font-size:10px;text-transform:uppercase;color:#d1a96e;letter-spacing:.05em}
+.article-card h3{margin-top:9px;font-family:Manrope,sans-serif;font-size:14px;line-height:1.5;font-weight:500}
+.article-card p{margin-top:12px;font-size:11px;line-height:1.65;color:rgba(255,255,255,.67)}
+.article-card time{margin-top:auto;padding-top:18px;font-size:10px;color:rgba(255,255,255,.72)}
+.article-card--compact .article-card__body{min-height:150px;padding:14px 16px 16px}
+.article-card--compact h3{font-size:12px;line-height:1.4}
+.article-card--compact .article-card__category,.article-card--compact time{font-size:9px}
+@media(max-width:820px){.article-card:not(.article-card--compact){display:grid;grid-template-columns:.9fr 1.1fr}.article-card:not(.article-card--compact) img{height:100%;aspect-ratio:auto}}
+@media(max-width:560px){.article-card:not(.article-card--compact){display:block}}
+</style>

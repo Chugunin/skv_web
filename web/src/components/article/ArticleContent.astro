@@ -1,0 +1,24 @@
+---
+interface Props { content?: string; }
+const { content = "" } = Astro.props;
+const hasHtml = /<\/?[a-z][\s\S]*>/i.test(content);
+const paragraphs = hasHtml ? [] : content.split(/\n{2,}/).map(value => value.trim()).filter(Boolean);
+---
+<div class="article-content">
+  {content ? (
+    hasHtml ? <div class="article-content__rich" set:html={content} /> : paragraphs.map(paragraph => <p>{paragraph}</p>)
+  ) : <p>Материал готовится к публикации.</p>}
+</div>
+
+<style>
+.article-content{font-size:17px;line-height:1.92;color:#383532}
+.article-content :global(p){margin:0 0 1.35em}
+.article-content :global(h2){margin:1.7em 0 .7em;font-size:clamp(34px,4vw,48px);line-height:1.08}
+.article-content :global(h3){margin:1.6em 0 .65em;font-size:clamp(25px,3vw,34px);line-height:1.15}
+.article-content :global(ul),.article-content :global(ol){margin:1.15em 0 1.45em;padding-left:1.4em}
+.article-content :global(li){margin:.45em 0}
+.article-content :global(blockquote){margin:2em 0;padding:4px 0 4px 28px;border-left:1px solid var(--color-accent);font-family:Cormorant,serif;font-size:1.55em;line-height:1.35}
+.article-content :global(a){color:var(--color-accent-strong);text-decoration:underline;text-underline-offset:3px}
+.article-content :global(img){margin:2.2em 0;width:100%;height:auto}
+.article-content :global(hr){margin:2.5em 0;border:0;border-top:1px solid var(--color-border)}
+</style>

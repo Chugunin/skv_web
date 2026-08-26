@@ -69,3 +69,15 @@
 - Practice по-прежнему не реализуется до закрытия OQ-01.
 - Формы по-прежнему остаются UI-слоем: канал доставки заблокирован OQ-02.
 - Production build в этой итерации не был подтвержден в изолированной среде подготовки патча: `npm ci` требует пакет `zwitch@2.0.4`, отсутствующий в локальном npm-cache. После применения патча требуется выполнить `npm ci`/`npm install` в рабочем окружении и `npm run build`.
+
+## Прогресс 2026-08-26 — проход 4
+
+- Этап D / Journal Data: frontend-контракт статьи расширен SEO-полями (`seo_title`, `seo_description`, `seo_image`), Directus mapper нормализует `cover`, `published_at`, relation `category`, reading time и asset URLs.
+- Категории Journal теперь читаются из Directus с локальным fallback, а не только из статического массива.
+- Добавлен единый `ArticleCard`, используемый featured/archive/related-блоками; устранено дублирование карточной разметки.
+- Страница статьи получила полноценный rich-text rendering для Directus WYSIWYG, related fallback, Article JSON-LD, article Open Graph metadata и SEO fallbacks.
+- BaseLayout дополнен absolute canonical/OG URLs и Twitter Card metadata.
+- Добавлен prerendered `/sitemap.xml` со статическими маршрутами и опубликованными статьями Journal.
+- `SITE`, `DIRECTUS_URL`, `DIRECTUS_STRICT` документированы в `web/.env.example`; Astro `site` теперь читается из окружения.
+- Зафиксирована целевая CMS-схема и минимальные Public permissions в `docs/DIRECTUS_SCHEMA.md`.
+- OQ-02 и OQ-03 остаются блокерами для реальной отправки форм и подписки; Practice остается заблокирован OQ-01.

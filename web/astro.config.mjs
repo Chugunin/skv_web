@@ -1,48 +1,25 @@
 import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
+import { loadEnv } from "vite";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), "");
 
-    vite: {
-
-        resolve: {
-
-            alias: {
-
-                "@": fileURLToPath(new URL("./src", import.meta.url)),
-
-                "@components": fileURLToPath(
-                    new URL("./src/components", import.meta.url)
-                ),
-
-                "@layouts": fileURLToPath(
-                    new URL("./src/layouts", import.meta.url)
-                ),
-
-                "@styles": fileURLToPath(
-                    new URL("./src/styles", import.meta.url)
-                ),
-
-                "@lib": fileURLToPath(
-                    new URL("./src/lib", import.meta.url)
-                ),
-
-                "@data": fileURLToPath(
-                    new URL("./src/data", import.meta.url)
-                ),
-
-                "@assets": fileURLToPath(
-                    new URL("./src/assets", import.meta.url)
-                ),
-
-                "@models": fileURLToPath(
-                    new URL("./src/models", import.meta.url)
-                )
-
+    return {
+        site: env.SITE || "http://localhost:4321",
+        vite: {
+            resolve: {
+                alias: {
+                    "@": fileURLToPath(new URL("./src", import.meta.url)),
+                    "@components": fileURLToPath(new URL("./src/components", import.meta.url)),
+                    "@layouts": fileURLToPath(new URL("./src/layouts", import.meta.url)),
+                    "@styles": fileURLToPath(new URL("./src/styles", import.meta.url)),
+                    "@lib": fileURLToPath(new URL("./src/lib", import.meta.url)),
+                    "@data": fileURLToPath(new URL("./src/data", import.meta.url)),
+                    "@assets": fileURLToPath(new URL("./src/assets", import.meta.url)),
+                    "@models": fileURLToPath(new URL("./src/models", import.meta.url))
+                }
             }
-
         }
-
-    }
-
+    };
 });
