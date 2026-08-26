@@ -1,0 +1,26 @@
+---
+import Container from "@components/layout/Container.astro";
+import SectionHeading from "@components/common/SectionHeading.astro";
+import Reveal from "@components/decorative/Reveal.astro";
+const items=[
+  ["Отношение к себе","Самооценка, внутренний диалог, принятие себя.","♙"],
+  ["Отношения с другими","Близость, границы, доверие, повторяющиеся сценарии.","♧"],
+  ["Эмоциональные состояния","Тревога, напряжение, эмоциональные реакции.","♡"],
+  ["Жизненные изменения","Кризисы, переходы, новые этапы жизни.","✦"],
+  ["Внутренние сценарии","Привычные способы мышления и поведения.","⌘"],
+  ["Самореализация","Выбор, цели, профессиональное и личное развитие.","↗"],
+  ["Психологический консалтинг","Аналитическая работа с жизненными, профессиональными и управленческими запросами.","▣"],
+  ["Работа с отношениями","Индивидуальные, парные и семейные запросы.","♢"]
+];
+---
+<section class="areas">
+  <Container>
+    <Reveal><SectionHeading>Области работы</SectionHeading></Reveal>
+    <div class="areas__grid">
+      {items.map(([title,text,icon],i)=><Reveal as="article" class="area-card" delay={(i%4)*60}><span class="area-card__icon" aria-hidden="true">{icon}</span><div><h3>{title}</h3><p>{text}</p></div></Reveal>)}
+    </div>
+  </Container>
+</section>
+<style>
+.areas{padding-bottom:var(--section-space)}.areas__grid{margin-top:38px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.area-card{min-height:180px;position:relative;display:grid;grid-template-columns:34px 1fr;gap:14px;padding:24px;border:1px solid var(--color-border);background:rgba(255,253,249,.28);overflow:hidden}.area-card::after{content:"";position:absolute;width:130px;height:50px;right:-25px;bottom:-12px;background:linear-gradient(165deg,transparent 15%,rgba(185,132,63,.16) 16% 27%,rgba(17,42,39,.16) 28% 45%,transparent 46%);transform:rotate(-9deg)}.area-card__icon{color:var(--color-accent);font-size:25px;line-height:1}.area-card h3{font-family:Manrope,sans-serif;font-size:13px;line-height:1.4;font-weight:600}.area-card p{margin-top:15px;color:var(--color-muted);font-size:11px;line-height:1.65}.area-card:nth-child(3n)::after{background:linear-gradient(165deg,transparent 15%,rgba(25,20,18,.16) 16% 34%,transparent 35%)}.area-card:nth-child(4n+2)::after{background:linear-gradient(165deg,transparent 15%,rgba(185,132,63,.18) 16% 34%,transparent 35%)}@media(max-width:1050px){.areas__grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.areas__grid{grid-template-columns:1fr}.area-card{min-height:150px}}
+</style>

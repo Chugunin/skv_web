@@ -1,0 +1,11 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Container from "@components/layout/Container.astro";
+import Button from "@components/common/Button.astro";
+---
+<BaseLayout title="Страница не найдена — SKV" description="Запрошенная страница не найдена." noindex={true}>
+ <Header/><main class="not-found"><Container><span>404</span><h1>Страница не найдена</h1><p>Возможно, адрес изменился или страница была удалена.</p><Button href="/" variant="outline">Вернуться на главную</Button></Container></main><Footer/>
+</BaseLayout>
+<style>.not-found{min-height:70vh;display:grid;place-items:center;text-align:center;padding:80px 0}.not-found span{font-family:"Cormorant Garamond",serif;color:var(--color-accent);font-size:34px}.not-found h1{margin-top:12px;font-size:clamp(58px,8vw,110px)}.not-found p{margin:24px auto 34px;color:var(--color-muted);font-size:14px}</style>

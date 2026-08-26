@@ -1,216 +1,26 @@
 ---
-const heroImage =
-    "https://static.tildacdn.com/tild3335-6134-4465-a662-396132653739/ChatGPT_Image_2_июл.webp";
+import Container from "@components/layout/Container.astro";
+import Button from "@components/common/Button.astro";
+import Reveal from "@components/decorative/Reveal.astro";
+import PaintStroke from "@components/decorative/PaintStroke.astro";
+import GeometricFigure from "@components/decorative/GeometricFigure.astro";
 ---
-
-<section class="hero" data-reveal>
-
-    <div class="hero__overlay"></div>
-
-    <div class="hero__container">
-
-        <div class="hero__content">
-
-            <div class="hero__logo">
-
-                • IOCU •
-
-            </div>
-
-            <h1>
-
-                SKV Journal
-
-            </h1>
-
-            <p>
-
-                Статьи и исследования о психологии,
-                восприятии и качестве жизни.
-
-                Материалы SKV о внутренних процессах человека,
-                отношениях и способах лучше понимать
-                себя и окружающий мир.
-
-            </p>
-
-            <a
-                    href="#articles"
-                    class="hero__button"
-            >
-
-                Смотреть материалы
-
-            </a>
-
-        </div>
-
+<section class="journal-hero" aria-labelledby="journal-title">
+  <Container>
+    <div class="journal-hero__grid">
+      <Reveal class="journal-hero__content">
+        <h1 id="journal-title">SKV Journal</h1>
+        <p class="journal-hero__eyebrow">Статьи и исследования о психологии,<br />восприятии и качестве жизни</p>
+        <p class="journal-hero__text">Материалы SKV о внутренних процессах человека, отношениях и способах лучше понимать себя и окружающий мир.</p>
+        <Button href="#articles" variant="outline">Смотреть материалы</Button>
+      </Reveal>
+      <Reveal class="journal-hero__art" delay={100}>
+        <GeometricFigure class="journal-hero__geometry" size={285}/>
+        <PaintStroke src="/assets/reference/journal-hero.webp" class="journal-hero__stroke" />
+      </Reveal>
     </div>
-
-    <img
-            class="hero__image"
-            src={heroImage}
-            alt=""
-    />
-
+  </Container>
 </section>
-
 <style>
-
-    .hero{
-
-        position:relative;
-
-        min-height:100vh;
-        padding-top:90px;
-
-        display:flex;
-
-        align-items:center;
-
-        overflow:hidden;
-
-    }
-
-    .hero__image{
-
-        position:absolute;
-
-        inset:0;
-
-        width:100%;
-
-        height:100%;
-
-        object-fit:cover;
-
-        z-index:-2;
-
-    }
-
-    .hero__overlay{
-
-        position:absolute;
-
-        inset:0;
-
-        background:rgba(0,0,0,.18);
-
-        z-index:-1;
-
-    }
-
-    .hero__container{
-
-        width:min(
-                calc(100% - var(--container-padding) * 2),
-                var(--container-width)
-        );
-
-        margin-inline:auto;
-
-    }
-
-    .hero__content{
-
-        width:540px;
-
-        color:white;
-
-    }
-
-    .hero__logo{
-
-        font-size:54px;
-
-        font-weight:200;
-
-        letter-spacing:.12em;
-
-        margin-bottom:22px;
-
-    }
-
-    .hero h1{
-
-        font-size:44px;
-
-        font-weight:300;
-
-        margin-bottom:26px;
-
-    }
-
-    .hero p{
-
-        font-size:18px;
-
-        line-height:1.8;
-
-        max-width:480px;
-
-        margin-bottom:42px;
-
-    }
-
-    .hero__button{
-
-        display:inline-flex;
-
-        align-items:center;
-
-        justify-content:center;
-
-        width:230px;
-
-        height:58px;
-
-        background:black;
-
-        color:white;
-
-        transition:.25s;
-
-    }
-
-    .hero__button:hover{
-
-        background:#222;
-
-    }
-
-    @media (max-width:900px){
-
-        .hero{
-
-            min-height:640px;
-
-        }
-
-        .hero__content{
-
-            width:100%;
-
-        }
-
-        .hero__logo{
-
-            font-size:42px;
-
-        }
-
-        .hero h1{
-
-            font-size:36px;
-
-        }
-
-        .hero p{
-
-            font-size:16px;
-
-        }
-
-    }
-
+.journal-hero{padding:clamp(58px,7vw,105px) 0 clamp(80px,8vw,122px);overflow:hidden}.journal-hero__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(40px,6vw,90px);align-items:center}.journal-hero h1{font-size:clamp(78px,9.5vw,145px);font-weight:400;letter-spacing:-.05em}.journal-hero__eyebrow{margin-top:22px;text-transform:uppercase;letter-spacing:.04em;font-size:14px;line-height:1.55}.journal-hero__text{margin:28px 0 34px;max-width:560px;color:var(--color-muted);font-size:14px;line-height:1.8}.journal-hero__content :global(.button){min-width:240px}.journal-hero__art{position:relative;min-height:440px}.journal-hero__stroke{position:absolute;inset:0 -5% 0 0}.journal-hero__stroke :global(img){object-fit:cover!important}.journal-hero__geometry{position:absolute;z-index:2;left:6%;top:-12%}@media(max-width:900px){.journal-hero__grid{grid-template-columns:1fr}.journal-hero__art{order:-1;min-height:360px}}@media(max-width:620px){.journal-hero__art{min-height:280px}.journal-hero__geometry{width:170px;height:170px}.journal-hero__eyebrow br{display:none}}
 </style>
