@@ -110,3 +110,12 @@
 - CMS-запросы articles/categories мемоизируются во время production static build, чтобы несколько компонентов и article routes не повторяли одинаковые запросы к Directus. В `astro dev` memoization отключена.
 - Этап F / SEO robustness: добавлена безопасная обработка дат; некорректные значения не формируют `Invalid Date`, `article:published_time`, JSON-LD date или sitemap `lastmod`.
 - Добавлены `docs/PRODUCTION_READINESS.md` и `docs/QA_STAGE7.md`, где явно зафиксированы deployment/runtime блокеры и последовательность production acceptance.
+
+## Прогресс 2026-08-26 — проход 8
+
+- Этап F / progressive enhancement: reveal-анимации больше не делают контент невидимым без JavaScript; mobile navigation получила no-JS fallback; Archive без JS остаётся полной читаемой библиотекой.
+- Этап F / interaction QA: mobile menu закрывается по pointer-down вне Header и корректно реагирует на переход desktop/mobile через `matchMedia`; ArticleCard получил полноценное focus-visible состояние.
+- Этап F / SEO: Главная, Therapy и Journal получили собственные OG images и preload hero LCP-кандидатов. Главная получила минимальный `Organization`/`WebSite` JSON-LD без неподтверждённых данных.
+- Этап F / accessibility: skip-link target на основных завершённых маршрутах сделан программно фокусируемым; фильтры Journal получили семантическую группу.
+- OQ-01 Practice, OQ-02 delivery заявок и OQ-03 подписка по решению владельца проекта отложены и больше не считаются блокерами текущей frontend-доработки.
+- Наполнение и окончательная Directus-настройка также отложены до завершения frontend/QA.

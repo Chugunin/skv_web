@@ -9,8 +9,10 @@ const [articles, categories] = await Promise.all([getArchive(), getCategories()]
  <Container>
   <Reveal class="archive__heading"><h2>Архив материалов</h2></Reveal>
   <Reveal class="archive__filters" delay={60}>
-   <button type="button" class="is-active" data-filter="all" aria-pressed="true">Все</button>
-   {categories.map(c=><button type="button" data-filter={c.slug} aria-pressed="false">{c.title}</button>)}
+   <div class="archive__filter-group" role="group" aria-label="Фильтр статей по категории">
+    <button type="button" class="is-active" data-filter="all" aria-pressed="true">Все</button>
+    {categories.map(c=><button type="button" data-filter={c.slug} aria-pressed="false">{c.title}</button>)}
+   </div>
   </Reveal>
   <div class="archive__grid" data-archive-grid>
    {articles.map((article,i)=><Reveal as="article" class="archive-item" delay={(i%4)*45}><div data-category={article.category?.slug ?? ""}><ArticleCard article={article} compact /></div></Reveal>)}
@@ -40,5 +42,6 @@ const [articles, categories] = await Promise.all([getArchive(), getCategories()]
   }));
 </script>
 <style>
-.archive{padding-bottom:var(--section-space);position:relative}.archive__heading{text-align:center}.archive h2{font-size:clamp(44px,4.7vw,68px)}.archive__filters{margin:24px auto 30px;display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.archive__filters button{min-height:34px;padding:7px 19px;border:1px solid var(--color-accent);border-radius:999px;font-size:10px;transition:background var(--transition-fast),color var(--transition-fast)}.archive__filters button.is-active,.archive__filters button:hover{background:#2d2b29;color:#fff;border-color:#2d2b29}.archive__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.archive-item[hidden]{display:none}.archive__empty{text-align:center;padding:40px 0;color:var(--color-muted);font-size:13px}@media(max-width:900px){.archive__grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.archive__grid{grid-template-columns:1fr}.archive__filters{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;margin-inline:calc(var(--container-padding)*-1);padding-inline:var(--container-padding)}.archive__filters button{white-space:nowrap}}
+.archive{padding-bottom:var(--section-space);position:relative}.archive__heading{text-align:center}.archive h2{font-size:clamp(44px,4.7vw,68px)}.archive__filters{margin:24px auto 30px}.archive__filter-group{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.archive__filters button{min-height:34px;padding:7px 19px;border:1px solid var(--color-accent);border-radius:999px;font-size:10px;transition:background var(--transition-fast),color var(--transition-fast)}.archive__filters button.is-active,.archive__filters button:hover{background:#2d2b29;color:#fff;border-color:#2d2b29}.archive__grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.archive-item[hidden]{display:none}.archive__empty{text-align:center;padding:40px 0;color:var(--color-muted);font-size:13px}@media(max-width:900px){.archive__grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.archive__grid{grid-template-columns:1fr}.archive__filters{overflow-x:auto;margin-inline:calc(var(--container-padding)*-1);padding-inline:var(--container-padding)}.archive__filter-group{justify-content:flex-start;flex-wrap:nowrap;width:max-content}.archive__filters button{white-space:nowrap}}
+:global(html:not(.js)) .archive__filters{display:none}
 </style>

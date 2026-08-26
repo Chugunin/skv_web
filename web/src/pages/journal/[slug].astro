@@ -49,7 +49,7 @@ const jsonLd = {
   {publishedIso && <meta slot="head" property="article:published_time" content={publishedIso} />}
   {article.category?.title && <meta slot="head" property="article:section" content={article.category.title} />}
   <Header />
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
     <article class="article">
       <Container>
         <header class="article__header">

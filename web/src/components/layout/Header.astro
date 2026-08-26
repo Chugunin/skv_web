@@ -29,6 +29,10 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
           {navigation.map((item) => <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.title}</a>)}
           <Button href="/#contact" variant="outline">Записаться на консультацию</Button>
         </nav>
+        <nav class="mobile-nav__fallback" aria-label="Мобильная навигация">
+          {navigation.map((item) => <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.title}</a>)}
+          <a href="/#contact">Записаться на консультацию</a>
+        </nav>
       </div>
     </div>
   </Container>
@@ -81,7 +85,13 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
       }
     }
   });
-  window.addEventListener("resize", () => { if (window.innerWidth > 900) close(); });
+  document.addEventListener("pointerdown", (event) => {
+    if (toggle?.getAttribute("aria-expanded") !== "true" || !header) return;
+    if (!header.contains(event.target as Node)) close();
+  });
+
+  const desktopQuery = window.matchMedia("(min-width: 901px)");
+  desktopQuery.addEventListener("change", (event) => { if (event.matches) close(); });
 </script>
 
 <style>
@@ -107,5 +117,21 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
     .mobile-nav__panel:not([hidden]) { display: grid; }
     .mobile-nav__panel a { min-height: 40px; display: flex; align-items: center; }
     .mobile-nav__panel a[aria-current="page"] { color: var(--color-accent-strong); }
+    .mobile-nav__fallback { display: none; }
+    :global(html:not(.js)) .mobile-nav__toggle { display: none; }
+    :global(html:not(.js)) .mobile-nav__fallback {
+      display: grid;
+      position: absolute;
+      right: 0;
+      top: 100%;
+      width: min(86vw, 360px);
+      padding: 20px 24px;
+      gap: 14px;
+      background: rgba(255,253,249,.98);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-soft);
+    }
+    :global(html:not(.js)) .mobile-nav__fallback a { min-height: 40px; display: flex; align-items: center; }
+    :global(html:not(.js)) .mobile-nav__fallback a[aria-current="page"] { color: var(--color-accent-strong); }
   }
 </style>

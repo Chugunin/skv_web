@@ -1,4 +1,50 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";import Header from "@components/layout/Header.astro";import Footer from "@components/layout/Footer.astro";import HomeHero from "@components/home/HomeHero.astro";import AboutSkv from "@components/home/AboutSkv.astro";import Principles from "@components/home/Principles.astro";import Directions from "@components/home/Directions.astro";import Audience from "@components/home/Audience.astro";import Contact from "@components/home/Contact.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import HomeHero from "@components/home/HomeHero.astro";
+import AboutSkv from "@components/home/AboutSkv.astro";
+import Principles from "@components/home/Principles.astro";
+import Directions from "@components/home/Directions.astro";
+import Audience from "@components/home/Audience.astro";
+import Contact from "@components/home/Contact.astro";
+import { config } from "@lib/config";
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": `${config.siteUrl.replace(/\/$/, "")}/#organization`,
+      name: config.siteName,
+      url: config.siteUrl
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${config.siteUrl.replace(/\/$/, "")}/#website`,
+      name: config.siteName,
+      url: config.siteUrl,
+      publisher: { "@id": `${config.siteUrl.replace(/\/$/, "")}/#organization` },
+      inLanguage: "ru-RU"
+    }
+  ]
+};
 ---
-<BaseLayout title="SKV — психология восприятия и качества жизни" description="SKV — экосистема восприятия и качества жизни: Therapy, Practice и Journal."><Header/><main id="main-content"><HomeHero/><AboutSkv/><Principles/><Directions/><Audience/><Contact/></main><Footer/></BaseLayout>
+<BaseLayout
+  title="SKV — психология восприятия и качества жизни"
+  description="SKV — экосистема восприятия и качества жизни: Therapy, Practice и Journal."
+  image="/assets/reference/home-hero.webp"
+  preloadImage="/assets/reference/home-hero.webp"
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
+  <Header />
+  <main id="main-content" tabindex="-1">
+    <HomeHero />
+    <AboutSkv />
+    <Principles />
+    <Directions />
+    <Audience />
+    <Contact />
+  </main>
+  <Footer />
+</BaseLayout>

@@ -9,6 +9,7 @@ interface Props {
   image?: string;
   noindex?: boolean;
   ogType?: "website" | "article";
+  preloadImage?: string;
 }
 
 const {
@@ -17,23 +18,27 @@ const {
   canonical,
   image,
   noindex = false,
-  ogType = "website"
+  ogType = "website",
+  preloadImage
 } = Astro.props;
 
 const canonicalUrl = new URL(canonical ?? Astro.url.pathname, config.siteUrl).toString();
 const imageUrl = image ? new URL(image, config.siteUrl).toString() : undefined;
+const preloadImageUrl = preloadImage ? new URL(preloadImage, config.siteUrl).toString() : undefined;
 ---
 <!doctype html>
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script is:inline>document.documentElement.classList.add("js");</script>
     <meta name="description" content={description} />
-    {noindex && <meta name="robots" content="noindex,nofollow" />}
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonicalUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" />
+    {preloadImageUrl && <link rel="preload" as="image" href={preloadImageUrl} fetchpriority="high" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="theme-color" content="#f7f4ef" />
     <title>{title}</title>

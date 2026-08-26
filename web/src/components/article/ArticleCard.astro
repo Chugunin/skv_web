@@ -21,7 +21,8 @@ const { article, compact = false } = Astro.props;
 
 <style>
 .article-card{display:flex;flex-direction:column;height:100%;background:#2d2b29;color:#fff;overflow:hidden;transition:transform var(--transition-fast),box-shadow var(--transition-fast)}
-.article-card:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(28,25,22,.12)}
+.article-card:hover,.article-card:focus-visible{transform:translateY(-3px);box-shadow:0 18px 42px rgba(28,25,22,.12)}
+.article-card:focus-visible{outline:2px solid var(--color-accent);outline-offset:4px}
 .article-card img{width:100%;aspect-ratio:1.55/1;object-fit:cover;filter:saturate(.72)}
 .article-card__body{display:flex;flex:1;flex-direction:column;padding:18px 20px 20px;min-height:178px}
 .article-card__category{font-size:10px;text-transform:uppercase;color:#d1a96e;letter-spacing:.05em}

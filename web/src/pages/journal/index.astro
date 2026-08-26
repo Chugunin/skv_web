@@ -1,4 +1,28 @@
 ---
-import BaseLayout from "@layouts/BaseLayout.astro";import Header from "@components/layout/Header.astro";import Footer from "@components/layout/Footer.astro";import Hero from "@components/journal/Hero.astro";import About from "@components/journal/About.astro";import Directions from "@components/journal/Directions.astro";import FeaturedArticles from "@components/journal/FeaturedArticles.astro";import Archive from "@components/journal/Archive.astro";import Subscribe from "@components/journal/Subscribe.astro";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Hero from "@components/journal/Hero.astro";
+import About from "@components/journal/About.astro";
+import Directions from "@components/journal/Directions.astro";
+import FeaturedArticles from "@components/journal/FeaturedArticles.astro";
+import Archive from "@components/journal/Archive.astro";
+import Subscribe from "@components/journal/Subscribe.astro";
 ---
-<BaseLayout title="SKV Journal — психология восприятия и качества жизни" description="SKV Journal — статьи и исследования о восприятии, мышлении, эмоциях, отношениях, личности и качестве жизни."><Header/><main id="main-content"><Hero/><About/><Directions/><FeaturedArticles/><Archive/><Subscribe/></main><Footer/></BaseLayout>
+<BaseLayout
+  title="SKV Journal — психология восприятия и качества жизни"
+  description="SKV Journal — статьи и исследования о восприятии, мышлении, эмоциях, отношениях, личности и качестве жизни."
+  image="/assets/reference/journal-hero.webp"
+  preloadImage="/assets/reference/journal-hero.webp"
+>
+  <Header />
+  <main id="main-content" tabindex="-1">
+    <Hero />
+    <About />
+    <Directions />
+    <FeaturedArticles />
+    <Archive />
+    <Subscribe />
+  </main>
+  <Footer />
+</BaseLayout>

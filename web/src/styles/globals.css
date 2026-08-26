@@ -30,17 +30,17 @@ input, textarea, select { color: inherit; }
   border: 0;
 }
 
-[data-reveal] {
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 700ms ease var(--reveal-delay, 0ms), transform 700ms ease var(--reveal-delay, 0ms);
 }
-[data-reveal].is-visible { opacity: 1; transform: none; }
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
-  [data-reveal] { opacity: 1; transform: none; }
+  .js [data-reveal] { opacity: 1; transform: none; }
 }
 
 .skip-link {
@@ -65,3 +65,5 @@ html.mobile-menu-open { overflow: hidden; }
     contain-intrinsic-size: auto 760px;
   }
 }
+
+main[tabindex="-1"]:focus { outline: none; }
