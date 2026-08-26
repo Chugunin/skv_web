@@ -4,8 +4,21 @@ import Header from "@components/layout/Header.astro";
 import Footer from "@components/layout/Footer.astro";
 import Container from "@components/layout/Container.astro";
 import Button from "@components/common/Button.astro";
+import GeometricFigure from "@components/decorative/GeometricFigure.astro";
 ---
-<BaseLayout title="Страница не найдена — SKV" description="Запрошенная страница не найдена." noindex={true}>
- <Header/><main class="not-found"><Container><span>404</span><h1>Страница не найдена</h1><p>Возможно, адрес изменился или страница была удалена.</p><Button href="/" variant="outline">Вернуться на главную</Button></Container></main><Footer/>
+<BaseLayout title="Страница не найдена — SKV" description="Запрошенная страница не найдена." noindex>
+  <Header />
+  <main id="main-content" class="not-found">
+    <GeometricFigure class="not-found__figure" size={320} />
+    <Container>
+      <span class="not-found__code">404</span>
+      <h1>Такой страницы нет</h1>
+      <p>Возможно, адрес изменился или страница была удалена.</p>
+      <Button href="/" variant="outline">На главную</Button>
+    </Container>
+  </main>
+  <Footer />
 </BaseLayout>
-<style>.not-found{min-height:70vh;display:grid;place-items:center;text-align:center;padding:80px 0}.not-found span{font-family:"Cormorant Garamond",serif;color:var(--color-accent);font-size:34px}.not-found h1{margin-top:12px;font-size:clamp(58px,8vw,110px)}.not-found p{margin:24px auto 34px;color:var(--color-muted);font-size:14px}</style>
+<style>
+  .not-found{position:relative;min-height:68vh;display:grid;align-items:center;padding:80px 0 120px;overflow:hidden}.not-found :global(.container){position:relative;z-index:1;max-width:900px}.not-found__code{font-size:12px;letter-spacing:.12em;color:var(--color-accent-strong)}.not-found h1{margin-top:12px;font-size:clamp(62px,8vw,112px)}.not-found p{margin:28px 0 34px;color:var(--color-muted)}.not-found__figure{position:absolute;right:8%;top:15%;opacity:.32}@media(max-width:700px){.not-found__figure{right:-120px;opacity:.18}}
+</style>

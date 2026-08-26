@@ -1,5 +1,172 @@
 ---
 import Button from "@components/common/Button.astro";
+
+interface Props {
+  mode?: "default" | "therapy";
+}
+
+const { mode = "default" } = Astro.props;
+const therapy = mode === "therapy";
+const formId = `contact-${therapy ? "therapy" : "default"}`;
+const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
 ---
-<form class="contact-form" action="#" method="post"><div class="contact-form__row"><label><span class="sr-only">Имя</span><input name="name" type="text" autocomplete="name" placeholder="Имя" required /></label><label><span class="sr-only">Телефон</span><input name="phone" type="tel" autocomplete="tel" placeholder="Телефон" /></label></div><label><span class="sr-only">Email</span><input name="email" type="email" autocomplete="email" placeholder="Email" required /></label><label><span class="sr-only">Сообщение</span><textarea name="message" rows="4" placeholder="Сообщение" required></textarea></label><Button type="submit" variant="primary">Отправить заявку</Button><p class="contact-form__note">Отправка будет подключена на этапе интеграции формы.</p></form>
-<style>.contact-form{display:grid;gap:10px}.contact-form__row{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block}input,textarea{width:100%;border:1px solid var(--color-border);background:rgba(255,255,255,.38);padding:12px 14px;min-height:46px;font-size:12px;outline:none;transition:border-color var(--transition-fast),background var(--transition-fast)}textarea{resize:vertical;min-height:96px}input:focus,textarea:focus{border-color:var(--color-accent);background:rgba(255,255,255,.62)}:global(.button){width:100%}.contact-form__note{color:var(--color-muted);font-size:11px;margin-top:2px}@media(max-width:620px){.contact-form__row{grid-template-columns:1fr}}</style>
+<form
+  class="contact-form"
+  id={formId}
+  data-contact-form
+  data-endpoint={endpoint}
+  novalidate
+>
+  <div class="contact-form__row">
+    <div class="field">
+      <label for={`${formId}-name`}>Имя</label>
+      <input id={`${formId}-name`} name="name" type="text" autocomplete="name" required minlength="2" maxlength="100" />
+      <p class="field__error" data-error-for="name" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for={`${formId}-contact`}>{therapy ? "Контакт" : "Телефон"}</label>
+      <input
+        id={`${formId}-contact`}
+        name="contact"
+        type="text"
+        autocomplete={therapy ? "email" : "tel"}
+        required
+        maxlength="120"
+        aria-describedby={`${formId}-contact-help`}
+      />
+      <p class="field__help" id={`${formId}-contact-help`}>
+        {therapy ? "Телефон, Telegram или email — как удобнее связаться." : "Укажите номер с кодом страны."}
+      </p>
+      <p class="field__error" data-error-for="contact" aria-live="polite"></p>
+    </div>
+  </div>
+
+  {!therapy && (
+    <div class="field">
+      <label for={`${formId}-email`}>Email</label>
+      <input id={`${formId}-email`} name="email" type="email" autocomplete="email" required maxlength="160" />
+      <p class="field__error" data-error-for="email" aria-live="polite"></p>
+    </div>
+  )}
+
+  <div class="field">
+    <label for={`${formId}-message`}>{therapy ? "Краткое описание запроса" : "Сообщение"}</label>
+    <textarea id={`${formId}-message`} name="message" rows="5" required minlength="10" maxlength="3000"></textarea>
+    <p class="field__error" data-error-for="message" aria-live="polite"></p>
+  </div>
+
+  <div class="contact-form__trap" aria-hidden="true">
+    <label for={`${formId}-website`}>Website</label>
+    <input id={`${formId}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <input type="hidden" name="source" value={therapy ? "therapy" : "home"} />
+
+  <Button type="submit" variant="primary">Отправить заявку</Button>
+  <p class="contact-form__status" data-form-status role="status" aria-live="polite"></p>
+</form>
+
+<script>
+  const forms = document.querySelectorAll<HTMLFormElement>("[data-contact-form]");
+
+  const messages: Record<string, string> = {
+    name: "Укажите имя (минимум 2 символа).",
+    contact: "Укажите контакт для обратной связи.",
+    email: "Укажите корректный email.",
+    message: "Опишите запрос минимум в 10 символах."
+  };
+
+  function setError(form: HTMLFormElement, field: HTMLInputElement | HTMLTextAreaElement, message = "") {
+    const error = form.querySelector<HTMLElement>(`[data-error-for="${field.name}"]`);
+    field.toggleAttribute("aria-invalid", Boolean(message));
+    if (error) error.textContent = message;
+  }
+
+  function validate(form: HTMLFormElement) {
+    let valid = true;
+    const fields = form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>("input[required], textarea[required]");
+
+    fields.forEach((field) => {
+      setError(form, field);
+      if (!field.checkValidity()) {
+        valid = false;
+        setError(form, field, messages[field.name] ?? "Проверьте значение поля.");
+      }
+    });
+
+    return valid;
+  }
+
+  forms.forEach((form) => {
+    const status = form.querySelector<HTMLElement>("[data-form-status]");
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+    form.addEventListener("input", (event) => {
+      const field = event.target;
+      if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) setError(form, field);
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!validate(form)) {
+        form.querySelector<HTMLElement>("[aria-invalid='true']")?.focus();
+        if (status) status.textContent = "Проверьте отмеченные поля.";
+        return;
+      }
+
+      const data = new FormData(form);
+      if (String(data.get("website") ?? "").trim()) return;
+
+      const endpoint = form.dataset.endpoint?.trim();
+      if (!endpoint) {
+        if (status) status.textContent = "Канал отправки пока не настроен. Форма готова к подключению интеграции.";
+        return;
+      }
+
+      try {
+        if (submit) submit.disabled = true;
+        form.setAttribute("aria-busy", "true");
+        if (status) status.textContent = "Отправляем заявку…";
+
+        const payload = Object.fromEntries(data.entries());
+        delete payload.website;
+
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        form.reset();
+        if (status) status.textContent = "Заявка отправлена. Мы свяжемся с вами по указанному контакту.";
+      } catch (error) {
+        console.error("Contact form submit failed", error);
+        if (status) status.textContent = "Не удалось отправить заявку. Попробуйте ещё раз позже.";
+      } finally {
+        if (submit) submit.disabled = false;
+        form.removeAttribute("aria-busy");
+      }
+    });
+  });
+</script>
+
+<style>
+  .contact-form { display: grid; gap: 18px; }
+  .contact-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .field { display: grid; gap: 7px; }
+  .field label { font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+  input, textarea { width: 100%; border: 1px solid var(--color-border); background: rgba(255,255,255,.38); padding: 12px 14px; min-height: 48px; font-size: 14px; outline: none; transition: border-color var(--transition-fast), background var(--transition-fast), box-shadow var(--transition-fast); }
+  textarea { resize: vertical; min-height: 118px; }
+  input:focus-visible, textarea:focus-visible { border-color: var(--color-accent); background: rgba(255,255,255,.62); box-shadow: 0 0 0 3px rgba(185,132,63,.11); outline: 0; }
+  input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: #9b4337; }
+  .field__help, .field__error, .contact-form__status { min-height: 1.35em; font-size: 11px; line-height: 1.45; }
+  .field__help { color: var(--color-muted); }
+  .field__error { color: #8b382f; }
+  .contact-form__status { color: var(--color-muted); }
+  .contact-form__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+  :global(.button) { width: 100%; }
+  :global(.button:disabled) { cursor: wait; opacity: .58; }
+  @media (max-width: 620px) { .contact-form__row { grid-template-columns: 1fr; } }
+</style>

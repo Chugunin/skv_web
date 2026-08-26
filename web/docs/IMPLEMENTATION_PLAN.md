@@ -81,3 +81,13 @@
 - `SITE`, `DIRECTUS_URL`, `DIRECTUS_STRICT` документированы в `web/.env.example`; Astro `site` теперь читается из окружения.
 - Зафиксирована целевая CMS-схема и минимальные Public permissions в `docs/DIRECTUS_SCHEMA.md`.
 - OQ-02 и OQ-03 остаются блокерами для реальной отправки форм и подписки; Practice остается заблокирован OQ-01.
+
+## Прогресс 2026-08-26 — проход 5
+
+- Этап F / accessibility: добавлен skip-link и единый `main#main-content` на пользовательских маршрутах; мобильная навигация переведена с `details` на управляемую кнопку с `aria-expanded`, Escape, закрытием после перехода и блокировкой фоновой прокрутки.
+- Этап D / формы: `ContactForm` получил реальные состояния validation/sending/success/error, доступные labels, `aria-live`, `aria-busy`, honeypot и JSON transport через `PUBLIC_CONTACT_ENDPOINT`.
+- OQ-02 остается открытым: конкретный CRM/email/Telegram transport и server-side endpoint не фиксируются до решения владельца проекта. При пустом endpoint форма не показывает ложный success.
+- Этап F / SEO/technical QA: добавлены `/404` и динамический `/robots.txt`, использующий `SITE`; незавершенный `/practice/` помечен `noindex` до закрытия OQ-01.
+- Исправлен broken route Footer `/privacy/`: добавлена временная `noindex`-страница. Это не юридическая политика; перед production требуется утвержденный текст.
+- Добавлен `docs/QA_STAGE5.md` с ручным acceptance checklist и явным перечнем незакрытых production-блокеров.
+- На Главной убран жесткий border-разделитель перед контактным блоком, чтобы лучше соблюдать требование единого бесшовного светлого пространства.

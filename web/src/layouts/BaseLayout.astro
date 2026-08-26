@@ -47,6 +47,7 @@ const imageUrl = image ? new URL(image, config.siteUrl).toString() : undefined;
     <slot name="head" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Перейти к основному содержанию</a>
     <slot />
     <script is:inline>
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

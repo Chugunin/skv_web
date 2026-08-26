@@ -1,0 +1,12 @@
+---
+import BaseLayout from "@layouts/BaseLayout.astro";
+import Header from "@components/layout/Header.astro";
+import Footer from "@components/layout/Footer.astro";
+import Container from "@components/layout/Container.astro";
+---
+<BaseLayout title="Политика конфиденциальности — SKV" description="Политика конфиденциальности SKV." noindex>
+  <Header />
+  <main id="main-content" class="legal"><Container><span>Служебная страница</span><h1>Политика конфиденциальности</h1><p>Юридический текст политики должен быть утверждён владельцем проекта до публикации сайта. Страница намеренно исключена из индексации до заполнения реквизитов, перечня обрабатываемых данных, целей обработки, сроков хранения и контактов оператора.</p></Container></main>
+  <Footer />
+</BaseLayout>
+<style>.legal{min-height:62vh;padding:clamp(80px,9vw,140px) 0}.legal :global(.container){max-width:900px}.legal span{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--color-accent-strong)}.legal h1{margin-top:12px;font-size:clamp(54px,7vw,92px)}.legal p{margin-top:32px;max-width:760px;color:var(--color-muted);line-height:1.8}</style>
