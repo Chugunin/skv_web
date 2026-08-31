@@ -1,0 +1,13 @@
+.git
+.gitignore
+
+web/node_modules
+web/.astro
+
+data/
+backups/
+
+*.dump
+*.tar.gz
+
+tmp/

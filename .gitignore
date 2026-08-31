@@ -21,3 +21,6 @@ data/directus/uploads/*
 # OS
 .DS_Store
 Thumbs.db
+
+# Temp
+tmp/
