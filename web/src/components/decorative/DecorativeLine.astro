@@ -1,8 +1,8 @@
 ---
 interface Props { class?: string; length?: string; }
-const { class: className = "", length = "180px" } = Astro.props;
+const { class: className = "", length = "180px", ...rest } = Astro.props;
 ---
-<span class={`decorative-line ${className}`} style={`--line-length:${length}`} aria-hidden="true"></span>
+<span class={`decorative-line ${className}`} style={`--line-length:${length}`} aria-hidden="true" {...rest}></span>
 <style>
 .decorative-line{display:block;width:min(100%,var(--line-length));height:1px;background:var(--color-accent);transform-origin:left center}:global(html.js) [data-reveal] .decorative-line{transform:scaleX(0);transition:transform 760ms cubic-bezier(.2,.7,.2,1) 160ms}:global(html.js) [data-reveal].is-visible .decorative-line{transform:scaleX(1)}
 </style>

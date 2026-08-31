@@ -5,14 +5,14 @@ interface Props {
   type?: "button" | "submit" | "reset";
   class?: string;
 }
-const { href, variant = "outline", type = "button", class: className = "" } = Astro.props;
+const { href, variant = "outline", type = "button", class: className = "", ...rest } = Astro.props;
 const classes = `button button--${variant} ${className}`;
 ---
 
 {href ? (
-  <a class={classes} href={href}><slot /><span aria-hidden="true" class="button__arrow">→</span></a>
+  <a class={classes} href={href} {...rest}><slot /><span aria-hidden="true" class="button__arrow">→</span></a>
 ) : (
-  <button class={classes} type={type}><slot /><span aria-hidden="true" class="button__arrow">→</span></button>
+  <button class={classes} type={type} {...rest}><slot /><span aria-hidden="true" class="button__arrow">→</span></button>
 )}
 
 <style>

@@ -20,10 +20,11 @@ const {
   width,
   height,
   loading = "lazy",
-  fetchpriority = "auto"
+  fetchpriority = "auto",
+  ...rest
 } = Astro.props;
 ---
-<div class={`paint-stroke ${className}`} aria-hidden={alt ? undefined : "true"}>
+<div class={`paint-stroke ${className}`} aria-hidden={alt ? undefined : "true"} {...rest}>
   <img
     src={src}
     alt={alt}

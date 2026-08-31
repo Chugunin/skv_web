@@ -1,9 +1,9 @@
 ---
 interface Props { as?: "h1" | "h2" | "h3"; class?: string; }
-const { as = "h2", class: className = "" } = Astro.props;
+const { as = "h2", class: className = "", ...rest } = Astro.props;
 const Tag = as;
 ---
-<div class={`section-heading ${className}`}>
+<div class={`section-heading ${className}`} {...rest}>
   <Tag><slot /></Tag>
 </div>
 <style>
