@@ -79,26 +79,58 @@ services:
       DIRECTUS_STRICT: "true"
       PUBLIC_CONTACT_ENDPOINT: ${PUBLIC_CONTACT_ENDPOINT:-}
 
+      NPM_CONFIG_UPDATE_NOTIFIER: "false"
+      NPM_CONFIG_AUDIT: "false"
+      NPM_CONFIG_FUND: "false"
+
     volumes:
       - ./web:/app
       - astro_node_modules:/app/node_modules
+      - astro_npm_cache:/root/.npm
 
     command:
-    - sh
-    - -c
-    - |
-      echo "=== Installing dependencies ==="
-      npm ci \
-        --no-audit \
-        --no-fund \
-        --update-notifier=false
-      
-      echo "=== Building Astro ==="
-      npm run build
+      - sh
+      - -c
+      - |
+        set -e
+
+        echo "=== Checking dependencies ==="
+
+        CURRENT_HASH="$$(cat package.json package-lock.json | sha256sum | awk '{print $$1}')"
+        CACHED_HASH="$$(cat /root/.npm/skv-deps.sha256 2>/dev/null || true)"
+
+        echo "Current dependencies hash: $$CURRENT_HASH"
+        echo "Cached dependencies hash:  $${CACHED_HASH:-none}"
+
+        if [ "$$CURRENT_HASH" != "$$CACHED_HASH" ] || [ ! -x node_modules/.bin/astro ]; then
+
+          echo "=== Dependencies changed or missing ==="
+          echo "=== Running npm ci ==="
+
+          npm ci \
+            --prefer-offline \
+            --no-audit \
+            --no-fund \
+            --update-notifier=false \
+            --maxsockets=2 \
+            --loglevel=info
+
+          echo "$$CURRENT_HASH" > /root/.npm/skv-deps.sha256
+
+          echo "=== Dependencies installed successfully ==="
+
+        else
+
+          echo "=== Dependencies unchanged; skipping npm ci ==="
+
+        fi
+
+        echo "=== Building Astro ==="
+
+        npm run build
 
     networks:
       - skv
-
 
   web:
     build:
@@ -118,6 +150,7 @@ services:
 volumes:
   postgres_data:
   astro_node_modules:
+  astro_npm_cache:
 
 
 networks:
