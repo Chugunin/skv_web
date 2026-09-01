@@ -28,7 +28,7 @@ services:
 
 
   directus:
-    image: directus/directus:11
+    image: directus/directus:12.2
     container_name: skv-directus
     restart: unless-stopped
 
