@@ -79,26 +79,36 @@ services:
       DIRECTUS_STRICT: "true"
       PUBLIC_CONTACT_ENDPOINT: ${PUBLIC_CONTACT_ENDPOINT:-}
 
+      NPM_CONFIG_UPDATE_NOTIFIER: "false"
+      NPM_CONFIG_AUDIT: "false"
+      NPM_CONFIG_FUND: "false"
+
     volumes:
       - ./web:/app
-      - astro_node_modules:/app/node_modules
+
+      # Кэш скачанных npm-пакетов.
+      # Сохраняется между deploy.
+      - astro_npm_cache:/root/.npm
 
     command:
-    - sh
-    - -c
-    - |
-      echo "=== Installing dependencies ==="
-      npm ci \
-        --no-audit \
-        --no-fund \
-        --update-notifier=false
-      
-      echo "=== Building Astro ==="
-      npm run build
+      - sh
+      - -c
+      - |
+        echo "=== Installing dependencies ==="
+
+        npm ci \
+          --prefer-offline \
+          --no-audit \
+          --no-fund \
+          --update-notifier=false \
+          --loglevel=info
+
+        echo "=== Building Astro ==="
+
+        npm run build
 
     networks:
       - skv
-
 
   web:
     build:
@@ -117,7 +127,7 @@ services:
 
 volumes:
   postgres_data:
-  astro_node_modules:
+  astro_npm_cache:
 
 
 networks:
