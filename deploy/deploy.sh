@@ -9,10 +9,12 @@ cd "$PROJECT_DIR"
 echo "=== SKV deploy started ==="
 
 echo "[1/11] Updating repository..."
+
 git fetch origin "$BRANCH"
 git reset --hard "origin/$BRANCH"
 
 echo "[2/11] Starting database..."
+
 docker compose up -d postgres
 
 echo "[3/11] Waiting for PostgreSQL..."
@@ -26,10 +28,14 @@ do
   sleep 2
 done
 
+echo "PostgreSQL is ready."
+
 echo "[4/11] Creating database backup..."
+
 "$PROJECT_DIR/deploy/backup.sh"
 
 echo "[5/11] Starting Directus..."
+
 docker compose up -d directus
 
 echo "[6/11] Waiting for Directus..."
@@ -37,7 +43,11 @@ echo "[6/11] Waiting for Directus..."
 DIRECTUS_READY=false
 
 for i in $(seq 1 60); do
-  if curl -fsS http://127.0.0.1:8055/server/ping >/dev/null 2>&1; then
+
+  if curl -fsS \
+    http://127.0.0.1:8055/server/ping \
+    >/dev/null 2>&1
+  then
     DIRECTUS_READY=true
     echo "Directus is ready."
     break
@@ -47,8 +57,13 @@ for i in $(seq 1 60); do
 done
 
 if [ "$DIRECTUS_READY" != "true" ]; then
-  echo "Directus failed readiness check."
-  docker compose logs --tail=100 directus
+
+  echo "ERROR: Directus failed readiness check."
+
+  docker compose logs \
+    --tail=100 \
+    directus || true
+
   exit 1
 fi
 
@@ -74,11 +89,26 @@ fi
 
 echo "[8/11] Building Astro..."
 
-docker compose --profile build run --rm -T astro-build
+if ! timeout 20m \
+  docker compose \
+    --profile build \
+    run \
+    --rm \
+    -T \
+    astro-build
+then
+
+  echo "ERROR: Astro build failed or timed out."
+
+  exit 1
+fi
 
 echo "[9/11] Saving current web image..."
 
-if docker image inspect skv-web:latest >/dev/null 2>&1; then
+if docker image inspect \
+  skv-web:latest \
+  >/dev/null 2>&1
+then
 
   docker tag \
     skv-web:latest \
@@ -88,15 +118,21 @@ if docker image inspect skv-web:latest >/dev/null 2>&1; then
 
 else
 
-  echo "No previous web image found. First deployment."
+  echo "No previous web image found."
+  echo "This appears to be the first deployment."
 
 fi
 
 echo "[10/11] Building web image..."
 
-docker compose build web
+if ! docker compose build web; then
 
-echo "[11/11] Deploying..."
+  echo "ERROR: Web image build failed."
+
+  exit 1
+fi
+
+echo "[11/11] Deploying web..."
 
 docker compose up -d web
 
@@ -109,14 +145,29 @@ for i in $(seq 1 30); do
   STATUS="$(
     docker inspect \
       --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' \
-      skv-web 2>/dev/null || true
+      skv-web \
+      2>/dev/null \
+      || true
   )"
 
   echo "Web status: $STATUS"
 
   if [ "$STATUS" = "healthy" ]; then
-    WEB_READY=true
-    break
+
+    if curl -fsS \
+      http://127.0.0.1:4321/ \
+      >/dev/null 2>&1
+    then
+
+      WEB_READY=true
+      break
+
+    else
+
+      echo "Container reports healthy, but HTTP check failed."
+
+    fi
+
   fi
 
   if [ "$STATUS" = "unhealthy" ]; then
@@ -128,57 +179,134 @@ done
 
 if [ "$WEB_READY" != "true" ]; then
 
-  echo "New web deployment failed health check."
+  echo
+  echo "ERROR: New web deployment failed health check."
+  echo
 
-  docker compose logs --tail=100 web || true
+  docker compose logs \
+    --tail=100 \
+    web \
+    || true
 
-  if docker image inspect skv-web:rollback >/dev/null 2>&1; then
+  if docker image inspect \
+    skv-web:rollback \
+    >/dev/null 2>&1
+  then
 
+    echo
     echo "Rolling back to previous web image..."
 
-    docker rm -f skv-web || true
+    docker rm \
+      -f \
+      skv-web \
+      >/dev/null 2>&1 \
+      || true
 
     docker tag \
       skv-web:rollback \
       skv-web:latest
 
-    docker compose up -d --force-recreate web
+    docker compose up \
+      -d \
+      --force-recreate \
+      web
 
-    sleep 5
+    echo "Waiting for rollback health check..."
 
-    ROLLBACK_STATUS="$(
-      docker inspect \
-        --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}unknown{{end}}' \
-        skv-web
-    )"
+    ROLLBACK_READY=false
 
-    echo "Rollback status: $ROLLBACK_STATUS"
+    for i in $(seq 1 30); do
+
+      STATUS="$(
+        docker inspect \
+          --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' \
+          skv-web \
+          2>/dev/null \
+          || true
+      )"
+
+      echo "Rollback web status: $STATUS"
+
+      if [ "$STATUS" = "healthy" ]; then
+
+        if curl -fsS \
+          http://127.0.0.1:4321/ \
+          >/dev/null 2>&1
+        then
+
+          ROLLBACK_READY=true
+          break
+
+        fi
+
+      fi
+
+      if [ "$STATUS" = "unhealthy" ]; then
+        break
+      fi
+
+      sleep 2
+    done
+
+    echo
+
+    if [ "$ROLLBACK_READY" = "true" ]; then
+
+      echo "Rollback completed successfully."
+
+    else
+
+      echo "CRITICAL: rollback container is not healthy."
+
+    fi
+
+    echo
+    echo "WARNING:"
+    echo "Frontend was rolled back."
+    echo "Directus schema was NOT rolled back."
+    echo "PostgreSQL backup is available in:"
+    echo "$PROJECT_DIR/backups"
 
   else
 
-    echo "No rollback image available."
+    echo
+    echo "CRITICAL: no rollback image is available."
 
   fi
 
   exit 1
 fi
 
+echo
 echo "=== Final health checks ==="
 
-curl -fsS \
+if ! curl -fsS \
   http://127.0.0.1:8055/server/ping \
   >/dev/null
+then
+
+  echo "ERROR: Directus final health check failed."
+
+  exit 1
+fi
 
 echo "Directus: OK"
 
-curl -fsS \
+if ! curl -fsS \
   http://127.0.0.1:4321/ \
   >/dev/null
+then
+
+  echo "ERROR: Web final HTTP check failed."
+
+  exit 1
+fi
 
 echo "Web: OK"
 
 echo
 echo "=== Containers ==="
+
 docker compose ps
 
 echo
