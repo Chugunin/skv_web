@@ -84,11 +84,17 @@ services:
       - astro_node_modules:/app/node_modules
 
     command:
-      - sh
-      - -c
-      - |
-        npm ci
-        npm run build
+    - sh
+    - -c
+    - |
+      echo "=== Installing dependencies ==="
+      npm ci \
+        --no-audit \
+        --no-fund \
+        --update-notifier=false
+      
+      echo "=== Building Astro ==="
+      npm run build
 
     networks:
       - skv
