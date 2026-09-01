@@ -54,6 +54,7 @@ services:
     volumes:
       - ./data/directus/uploads:/directus/uploads
       - ./data/directus/extensions:/directus/extensions
+      - ./directus/schema:/directus/schema
 
     ports:
       - "8055:8055"
