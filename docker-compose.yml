@@ -134,6 +134,8 @@ services:
       - skv
 
   web:
+    image: skv-web:latest
+
     build:
       context: .
       dockerfile: deploy/web.Dockerfile
@@ -143,6 +145,17 @@ services:
 
     ports:
       - "4321:80"
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --spider http://127.0.0.1/ || exit 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
 
     networks:
       - skv
