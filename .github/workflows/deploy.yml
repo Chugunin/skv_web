@@ -1,0 +1,26 @@
+name: Deploy SKV
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: skv-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Raspberry Pi
+
+    runs-on:
+      - self-hosted
+      - Linux
+      - ARM64
+
+    timeout-minutes: 30
+
+    steps:
+      - name: Deploy master
+        run: |
+          /opt/skv_web/deploy/deploy.sh
