@@ -83,10 +83,13 @@ const heroStrokes = [
     display: flex;
     align-items: center;
     padding: clamp(42px, 6vw, 92px) 0 clamp(70px, 8vw, 120px);
-    overflow: hidden;
+    position: relative;
+    overflow: visible;
   }
 
   .home-hero__grid {
+    position: relative;
+    z-index: 2;
     display: grid;
     grid-template-columns: minmax(300px, .74fr) minmax(520px, 1.26fr);
     align-items: center;
@@ -95,7 +98,7 @@ const heroStrokes = [
 
   .home-hero__content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
   }
 
   .home-hero h1 {
@@ -131,6 +134,8 @@ const heroStrokes = [
     height: 100%;
     margin-right: calc(var(--container-padding) * -1);
     z-index: 1;
+    overflow: visible;
+    pointer-events: none;
   }
 
   .home-hero__brushes {
@@ -140,6 +145,8 @@ const heroStrokes = [
     height: auto;
     aspect-ratio: 1;
     transform: translate(-50%, -50%);
+    z-index: 1;
+    overflow: visible;
   }
 
   @media (max-width: 900px) {
