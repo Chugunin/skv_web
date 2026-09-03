@@ -4,7 +4,7 @@ import Reveal from "@components/decorative/Reveal.astro";
 import GeometricFigure from "@components/decorative/GeometricFigure.astro";
 import Button from "@components/common/Button.astro";
 ---
-<section class="dialog" id="dialog">
+<section class="dialog" id="dialog" data-contact-fab-hide>
   <Container>
     <Reveal class="dialog__copy">
       <GeometricFigure class="dialog__geometry" size={150}/>
@@ -15,5 +15,5 @@ import Button from "@components/common/Button.astro";
   </Container>
 </section>
 <style>
-.dialog{padding:clamp(70px,8vw,120px) 0;position:relative;overflow:hidden}.dialog__copy{position:relative;max-width:760px}.dialog h2{font-size:clamp(42px,4.6vw,68px)}.dialog__copy p{margin-top:28px;max-width:600px;color:var(--color-muted);font-size:clamp(14px,1.05vw,16px);line-height:1.8}.dialog__copy :global(.button){margin-top:34px;border-radius:999px}.dialog__geometry{position:absolute;left:-190px;bottom:-95px;opacity:.5}@media(max-width:850px){.dialog__geometry{display:none}.dialog__copy :global(.button){width:100%;max-width:360px}}
+.dialog{padding:clamp(70px,8vw,120px) 0;position:relative;overflow:hidden}.dialog__copy{position:relative;max-width:760px}.dialog h2{font-size:clamp(42px,4.6vw,68px)}.dialog__copy p{margin-top:28px;max-width:600px;color:var(--color-muted);font-size:clamp(14px,1.05vw,16px);line-height:1.8}.dialog__copy :global(.button){margin-top:34px;border-radius:999px}.dialog__geometry{position:absolute;left:-190px;bottom:-95px;opacity:.5}@media(max-width:850px){.dialog__geometry{display:none}}
 </style>

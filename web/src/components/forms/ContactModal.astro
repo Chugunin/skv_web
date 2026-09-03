@@ -16,7 +16,7 @@ import ContactForm from "./ContactForm.astro";
       <span></span><span></span>
     </button>
     <div class="contact-modal__heading">
-      <p class="contact-modal__eyebrow">SKV Therapy</p>
+      <a href="/" class="contact-modal__brand" aria-label="SKV — главная">SKV</a>
       <h2 id="contact-modal-title">Записаться на консультацию</h2>
       <p id="contact-modal-description">Оставьте удобный контакт и коротко опишите запрос. Мы свяжемся с вами, чтобы договориться о первой встрече.</p>
     </div>
@@ -112,7 +112,8 @@ import ContactForm from "./ContactForm.astro";
   .contact-modal__close span:first-child { transform: rotate(45deg); }
   .contact-modal__close span:last-child { transform: rotate(-45deg); }
   .contact-modal__heading { max-width: 620px; margin-bottom: 32px; padding-right: 46px; }
-  .contact-modal__eyebrow { margin-bottom: 10px; color: var(--color-accent-strong); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+  .contact-modal__brand { display: inline-block; margin-bottom: 14px; font-family: "Cormorant Garamond", Cormorant, serif; font-size: 34px; line-height: 1; color: var(--color-accent); letter-spacing: -.05em; transition: color var(--transition-fast); }
+  .contact-modal__brand:hover, .contact-modal__brand:focus-visible { color: var(--color-accent-strong); outline: none; }
   .contact-modal h2 { font-size: clamp(38px, 5vw, 62px); line-height: .98; letter-spacing: -.025em; }
   .contact-modal__heading > p:last-child { margin-top: 18px; max-width: 590px; color: var(--color-muted); font-size: 14px; line-height: 1.7; }
   :global(html.contact-modal-open) { overflow: hidden; }
