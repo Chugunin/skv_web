@@ -51,7 +51,7 @@ input, textarea, select { color: inherit; }
 
 .site-side-art__ornament {
   display: block;
-  width: clamp(360px, 34vw, 680px);
+  width: clamp(180px, 17vw, 340px);
   height: auto;
   max-width: none;
   opacity: 1;
@@ -59,13 +59,13 @@ input, textarea, select { color: inherit; }
 
 @media (max-width: 999px) {
   .site-side-art__ornament {
-    width: clamp(300px, 52vw, 500px);
+    width: clamp(150px, 26vw, 250px);
   }
 }
 
 @media (max-width: 620px) {
   .site-side-art__ornament {
-    width: min(78vw, 380px);
+    width: min(39vw, 190px);
   }
 }
 
