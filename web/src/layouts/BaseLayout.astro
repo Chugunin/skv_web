@@ -57,9 +57,8 @@ const preloadImageUrl = preloadImage ? new URL(preloadImage, config.siteUrl).toS
     <slot name="head" />
   </head>
   <body>
-    <div class="site-corners" aria-hidden="true">
-      <span class="site-corners__ornament site-corners__ornament--top-left"></span>
-      <span class="site-corners__ornament site-corners__ornament--bottom-right"></span>
+    <div class="site-side-art site-side-art--left" aria-hidden="true">
+      <span class="site-side-art__ornament"></span>
     </div>
 
     <div class="site-shell">

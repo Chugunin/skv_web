@@ -37,33 +37,40 @@ input, textarea, select { color: inherit; }
   isolation: isolate;
 }
 
-.site-corners {
+.site-side-art {
   position: fixed;
-  inset: 0;
+  inset-block: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: clip;
+  overflow: hidden;
 }
 
-.site-corners__ornament {
+.site-side-art--left {
+  left: 0;
+  width: max(var(--container-padding), calc((100vw - var(--container-width)) / 2));
+}
+
+.site-side-art__ornament {
   position: absolute;
-  display: block;
-  width: min(34vw, 520px);
-  aspect-ratio: 620 / 320;
-  background: url("/assets/decorative/page-corner-stroke.svg") no-repeat center / contain;
-  opacity: 0.92;
-}
-
-.site-corners__ornament--top-left {
   top: -8px;
-  left: -22px;
+  left: -18px;
+  width: 520px;
+  height: 268px;
+  display: block;
+  background-image: url("/assets/decorative/page-corner-stroke@1x.png");
+  background-image: image-set(
+    url("/assets/decorative/page-corner-stroke@1x.png") 1x,
+    url("/assets/decorative/page-corner-stroke@2x.png") 2x,
+    url("/assets/decorative/page-corner-stroke@3x.png") 3x
+  );
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-size: 520px 268px;
+  opacity: 0.9;
 }
 
-.site-corners__ornament--bottom-right {
-  right: -26px;
-  bottom: -16px;
-  transform: rotate(180deg);
-  opacity: 0.84;
+@media (max-width: 900px) {
+  .site-side-art { display: none; }
 }
 
 .js [data-reveal] {
@@ -72,40 +79,6 @@ input, textarea, select { color: inherit; }
   transition: opacity 700ms ease var(--reveal-delay, 0ms), transform 700ms ease var(--reveal-delay, 0ms);
 }
 .js [data-reveal].is-visible { opacity: 1; transform: none; }
-
-@media (max-width: 900px) {
-  .site-corners__ornament {
-    width: min(44vw, 360px);
-    opacity: 0.82;
-  }
-
-  .site-corners__ornament--top-left {
-    top: 8px;
-    left: -20px;
-  }
-
-  .site-corners__ornament--bottom-right {
-    right: -28px;
-    bottom: -20px;
-  }
-}
-
-@media (max-width: 560px) {
-  .site-corners__ornament {
-    width: min(52vw, 270px);
-    opacity: 0.72;
-  }
-
-  .site-corners__ornament--top-left {
-    top: 14px;
-    left: -26px;
-  }
-
-  .site-corners__ornament--bottom-right {
-    right: -34px;
-    bottom: -26px;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
