@@ -85,6 +85,7 @@ const style = [
     max-width: none;
     user-select: none;
     -webkit-user-drag: none;
+    opacity: 0;
     --brush-reveal: 0%;
     -webkit-mask-image: linear-gradient(
       var(--brush-angle),
@@ -112,18 +113,21 @@ const style = [
   }
 
   :global(.brush-composition.is-complete) .brush-stroke img {
+    opacity: 1;
     --brush-reveal: 115%;
     animation: none;
     will-change: auto;
   }
 
   @keyframes brush-paint {
-    from { --brush-reveal: 0%; }
-    to { --brush-reveal: 115%; }
+    0% { opacity: 0; --brush-reveal: 0%; }
+    0.5% { opacity: 1; --brush-reveal: 0%; }
+    100% { opacity: 1; --brush-reveal: 115%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .brush-stroke img {
+      opacity: 1;
       --brush-reveal: 115%;
       animation: none !important;
       will-change: auto;
