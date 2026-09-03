@@ -38,7 +38,7 @@ input, textarea, select { color: inherit; }
 }
 
 .site-side-art {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   z-index: 0;
@@ -51,10 +51,22 @@ input, textarea, select { color: inherit; }
 
 .site-side-art__ornament {
   display: block;
-  width: auto;
+  width: clamp(360px, 34vw, 680px);
   height: auto;
   max-width: none;
   opacity: 1;
+}
+
+@media (max-width: 999px) {
+  .site-side-art__ornament {
+    width: clamp(300px, 52vw, 500px);
+  }
+}
+
+@media (max-width: 620px) {
+  .site-side-art__ornament {
+    width: min(78vw, 380px);
+  }
 }
 
 .js [data-reveal] {
