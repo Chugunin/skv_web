@@ -21,5 +21,15 @@ const directions = await getDirections();
   </Container>
 </section>
 <style>
-.journal-directions{padding-bottom:var(--section-space)}.journal-directions__heading{text-align:center}.journal-directions__grid{display:grid;grid-template-columns:repeat(6,1fr);margin-top:38px}.direction{text-align:center;padding:0 22px;border-right:1px solid var(--color-border)}.direction:last-child{border-right:0}.direction>span{display:block;color:var(--color-accent);font-size:33px;line-height:1}.direction h3{margin-top:16px;font-family:Manrope,sans-serif;font-size:12px;font-weight:600}.direction p{margin-top:10px;color:var(--color-muted);font-size:10px;line-height:1.6}@media(max-width:900px){.journal-directions__grid{grid-template-columns:repeat(3,1fr);gap:32px 0}.direction:nth-child(3n){border-right:0}}@media(max-width:560px){.journal-directions__grid{grid-template-columns:repeat(2,1fr)}.direction:nth-child(3n){border-right:1px solid var(--color-border)}.direction:nth-child(2n){border-right:0}}
+.journal-directions{padding-bottom:var(--section-space)}
+.journal-directions__heading{text-align:center}
+.journal-directions__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin-top:42px;border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border)}
+.direction{min-width:0;text-align:left;padding:28px 30px 30px;border-right:1px solid var(--color-border);border-bottom:1px solid var(--color-border)}
+.direction:nth-child(3n){border-right:0}
+.direction:nth-last-child(-n+3){border-bottom:0}
+.direction>span{display:block;color:var(--color-accent);font-size:31px;line-height:1}
+.direction h3{margin-top:16px;font-family:Manrope,sans-serif;font-size:13px;line-height:1.45;font-weight:600}
+.direction p{margin-top:10px;max-width:320px;color:var(--color-muted);font-size:12px;line-height:1.65}
+@media(max-width:760px){.journal-directions__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.direction:nth-child(3n){border-right:1px solid var(--color-border)}.direction:nth-child(2n){border-right:0}.direction:nth-last-child(-n+3){border-bottom:1px solid var(--color-border)}.direction:nth-last-child(-n+2){border-bottom:0}}
+@media(max-width:480px){.journal-directions__grid{grid-template-columns:1fr}.direction,.direction:nth-child(3n),.direction:nth-child(2n){border-right:0;border-bottom:1px solid var(--color-border);padding-inline:18px}.direction:nth-last-child(-n+2){border-bottom:1px solid var(--color-border)}.direction:last-child{border-bottom:0}}
 </style>

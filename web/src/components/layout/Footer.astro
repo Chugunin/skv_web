@@ -21,11 +21,15 @@ import { navigation } from "@lib/navigation";
   .site-footer__main { min-height: 52px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 28px; }
   .brand { justify-self: start; font-family: "Cormorant Garamond", Cormorant, serif; font-size: 28px; color: var(--color-accent); }
   nav { display: flex; gap: clamp(22px, 3vw, 44px); font-size: 12px; }
+  nav a, .site-footer__meta a { transition: color var(--transition-fast); }
+  nav a:hover, .site-footer__meta a:hover { color: var(--color-accent-strong); }
   .social { justify-self: end; min-height: 1px; }
   .site-footer__meta { display: flex; justify-content: space-between; gap: 24px; padding-top: 14px; border-top: 1px solid var(--color-border); color: var(--color-muted); font-size: 11px; }
   @media (max-width: 760px) {
-    .site-footer__main { grid-template-columns: 1fr; align-items: start; }
-    nav { flex-wrap: wrap; }
+    .site-footer { padding-top: 30px; }
+    .site-footer__main { grid-template-columns: 1fr; align-items: start; gap: 22px; }
+    nav { flex-wrap: wrap; row-gap: 12px; }
     .social { justify-self: start; }
+    .site-footer__meta { flex-direction: column; gap: 8px; padding-top: 18px; }
   }
 </style>

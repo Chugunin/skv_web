@@ -36,3 +36,19 @@
   --transition-fast: 180ms ease;
   --transition-base: 320ms ease;
 }
+
+
+@media (max-width: 760px) {
+  :root {
+    --container-padding: 20px;
+    --section-space: 72px;
+    --header-height: 76px;
+  }
+}
+
+@media (max-width: 420px) {
+  :root {
+    --container-padding: 18px;
+    --section-space: 60px;
+  }
+}

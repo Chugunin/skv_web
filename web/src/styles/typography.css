@@ -22,6 +22,14 @@ h3 { font-size: clamp(28px, 3vw, 42px); }
 
 p { font-size: clamp(15px, 1.25vw, 18px); }
 
+h1, h2, h3, h4, h5, h6, p, a { overflow-wrap: break-word; }
+
+@media (max-width: 560px) {
+  h1 { font-size: clamp(52px, 16vw, 76px); }
+  h2 { font-size: clamp(38px, 11vw, 52px); }
+  h3 { font-size: clamp(26px, 8vw, 36px); }
+}
+
 .eyebrow {
   font-size: 12px;
   font-weight: 600;
