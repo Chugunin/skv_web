@@ -58,7 +58,13 @@ const preloadImageUrl = preloadImage ? new URL(preloadImage, config.siteUrl).toS
   </head>
   <body>
     <div class="site-side-art site-side-art--left" aria-hidden="true">
-      <span class="site-side-art__ornament"></span>
+      <img
+        class="site-side-art__ornament"
+        src="/assets/decorative/page-corner-stroke@1x.png"
+        srcset="/assets/decorative/page-corner-stroke@1x.png 1x, /assets/decorative/page-corner-stroke@2x.png 2x, /assets/decorative/page-corner-stroke@3x.png 3x"
+        alt=""
+        decoding="async"
+      />
     </div>
 
     <div class="site-shell">

@@ -39,38 +39,32 @@ input, textarea, select { color: inherit; }
 
 .site-side-art {
   position: fixed;
-  inset-block: 0;
+  top: 0;
+  left: 0;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
-}
-
-.site-side-art--left {
-  left: 0;
-  width: max(var(--container-padding), calc((100vw - var(--container-width)) / 2));
 }
 
 .site-side-art__ornament {
-  position: absolute;
-  top: -8px;
-  left: -18px;
-  width: 520px;
-  height: 268px;
   display: block;
-  background-image: url("/assets/decorative/page-corner-stroke@1x.png");
-  background-image: image-set(
-    url("/assets/decorative/page-corner-stroke@1x.png") 1x,
-    url("/assets/decorative/page-corner-stroke@2x.png") 2x,
-    url("/assets/decorative/page-corner-stroke@3x.png") 3x
-  );
-  background-repeat: no-repeat;
-  background-position: left top;
-  background-size: 520px 268px;
+  width: clamp(280px, 34vw, 520px);
+  height: auto;
+  max-width: none;
   opacity: 0.9;
 }
 
 @media (max-width: 900px) {
-  .site-side-art { display: none; }
+  .site-side-art__ornament {
+    width: clamp(230px, 48vw, 360px);
+    opacity: 0.82;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-side-art__ornament {
+    width: min(62vw, 300px);
+    opacity: 0.74;
+  }
 }
 
 .js [data-reveal] {
