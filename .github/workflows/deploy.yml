@@ -23,4 +23,4 @@ jobs:
     steps:
       - name: Deploy master
         run: |
-          /opt/skv_web/deploy/deploy.sh
+          bash /opt/skv_web/deploy/deploy.sh

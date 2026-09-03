@@ -32,7 +32,7 @@ echo "PostgreSQL is ready."
 
 echo "[4/11] Creating database backup..."
 
-"$PROJECT_DIR/deploy/backup.sh"
+bash "$PROJECT_DIR/deploy/backup.sh"
 
 echo "[5/11] Starting Directus..."
 
