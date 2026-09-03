@@ -37,7 +37,7 @@ const jsonLd = {
   "@type": "Article",
   headline: article.title,
   description,
-  ...(publishedIso ? { datePublished: publishedIso, dateModified: publishedIso } : {}),
+  ...(publishedIso ? { datePublished: publishedIso } : {}),
   mainEntityOfPage: canonicalUrl,
   author: { "@type": "Organization", name: article.author || "SKV" },
   publisher: { "@type": "Organization", name: "SKV", url: config.siteUrl },
@@ -53,21 +53,21 @@ const jsonLd = {
     <article class="article">
       <Container>
         <header class="article__header">
-          <a class="article__back" href="/journal/">← Journal</a>
+          <a class="article__back" href="/journal/"><span aria-hidden="true">←</span> Journal</a>
           {article.category?.title && <span class="article__category">{article.category.title}</span>}
           <h1>{article.title}</h1>
-          <p class="article__lead">{article.description}</p>
+          {article.description && <p class="article__lead">{article.description}</p>}
           <ArticleMeta date={article.date} author={article.author} readingTime={article.readingTime}/>
         </header>
-        {article.image && <img class="article__cover" src={article.image} alt="" width="1600" height="850" loading="eager" decoding="async" fetchpriority="high" />}
+        {article.image && <img class="article__cover" src={article.image} alt={article.title} width="1600" height="850" loading="eager" decoding="async" fetchpriority="high" />}
         <div class="article__content"><ArticleContent content={article.content} /></div>
       </Container>
     </article>
-    {related.length > 0 && <section class="related"><Container><h2>Связанные материалы</h2><div class="related__grid">{related.map(item=><ArticleCard article={item} compact />)}</div></Container></section>}
+    {related.length > 0 && <section class="related" aria-labelledby="related-title"><Container><div class="related__head"><h2 id="related-title">Связанные материалы</h2><a href="/journal/#archive">Все материалы <span aria-hidden="true">→</span></a></div><div class="related__grid">{related.map(item=><ArticleCard article={item} compact />)}</div></Container></section>}
     <section class="article-cta"><Container><div><h2>Продолжить чтение</h2><p>Вернуться в интеллектуальную библиотеку SKV.</p></div><Button href="/journal/" variant="outline">Все материалы</Button></Container></section>
   </main>
   <Footer />
 </BaseLayout>
 <style>
-.article{padding:clamp(70px,8vw,120px) 0}.article__header{max-width:960px;margin:0 auto 56px}.article__back{display:inline-block;margin-bottom:32px;font-size:12px;color:var(--color-accent-strong)}.article__category{display:block;text-transform:uppercase;letter-spacing:.07em;font-size:11px;color:var(--color-accent-strong)}.article h1{margin-top:14px;font-size:clamp(54px,7vw,96px);line-height:1.02}.article__lead{margin:28px 0 28px;max-width:780px;color:var(--color-muted);font-size:clamp(17px,1.5vw,22px);line-height:1.7}.article__cover{width:100%;max-height:680px;aspect-ratio:16/8.5;object-fit:cover}.article__content{max-width:780px;margin:64px auto 0}.related{padding:0 0 var(--section-space)}.related h2{font-size:clamp(42px,4.5vw,62px);margin-bottom:34px}.related__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.article-cta{padding:70px 0;border-top:1px solid var(--color-border)}.article-cta :global(.container){display:flex;justify-content:space-between;align-items:center;gap:32px}.article-cta h2{font-size:48px}.article-cta p{margin-top:12px;color:var(--color-muted);font-size:13px}@media(max-width:760px){.related__grid{grid-template-columns:1fr}.article-cta :global(.container){align-items:flex-start;flex-direction:column}.article__content{margin-top:42px}}
+.article{padding:clamp(70px,8vw,120px) 0}.article__header{max-width:960px;margin:0 auto 56px}.article__back{display:inline-flex;gap:8px;align-items:center;margin-bottom:32px;font-size:12px;color:var(--color-accent-strong);border-bottom:1px solid transparent}.article__back:hover,.article__back:focus-visible{border-color:currentColor}.article__category{display:block;text-transform:uppercase;letter-spacing:.07em;font-size:11px;color:var(--color-accent-strong)}.article h1{max-width:1000px;margin-top:14px;font-size:clamp(48px,7vw,96px);line-height:1.02;overflow-wrap:anywhere}.article__lead{margin:28px 0;max-width:780px;color:var(--color-muted);font-size:clamp(17px,1.5vw,22px);line-height:1.7}.article__cover{display:block;width:100%;max-height:680px;aspect-ratio:16/8.5;object-fit:cover}.article__content{max-width:780px;margin:64px auto 0}.related{padding:0 0 var(--section-space)}.related__head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:34px}.related h2{font-size:clamp(42px,4.5vw,62px)}.related__head>a{flex:none;padding-bottom:5px;border-bottom:1px solid var(--color-line);font-size:12px;color:var(--color-accent-strong)}.related__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.article-cta{padding:70px 0;border-top:1px solid var(--color-border)}.article-cta :global(.container){display:flex;justify-content:space-between;align-items:center;gap:32px}.article-cta h2{font-size:clamp(38px,4vw,48px)}.article-cta p{margin-top:12px;color:var(--color-muted);font-size:13px}@media(max-width:900px){.related__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.related__grid :global(.article-card:last-child:nth-child(odd)){grid-column:1/-1;max-width:calc(50% - 7px)}}@media(max-width:760px){.related__grid{grid-template-columns:1fr}.related__grid :global(.article-card:last-child:nth-child(odd)){grid-column:auto;max-width:none}.related__head{align-items:flex-start;flex-direction:column}.article-cta :global(.container){align-items:flex-start;flex-direction:column}.article__content{margin-top:42px}}@media(max-width:560px){.article{padding-top:56px}.article__header{margin-bottom:38px}.article h1{font-size:clamp(42px,13vw,64px)}.article__cover{margin-inline:calc(var(--container-padding)*-1);width:calc(100% + var(--container-padding)*2);max-width:none;aspect-ratio:4/3}.article__lead{margin:20px 0 24px}.article-cta{padding:52px 0}}
 </style>
