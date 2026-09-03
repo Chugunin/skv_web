@@ -6,17 +6,22 @@ import { mapArticle } from "@lib/directus/mappers/articleMapper";
 import * as local from "./articleRepository";
 import { categories as localCategories } from "@data/categories";
 
-const strict = import.meta.env.DIRECTUS_STRICT === "true";
+const allowDevFixtures = import.meta.env.DEV && import.meta.env.DIRECTUS_DEV_FALLBACK === "true";
 let buildArticlesPromise: Promise<Article[]> | undefined;
 let buildCategoriesPromise: Promise<Category[]> | undefined;
 
-function fallbackWarning(label: string): void {
-  console.warn(`[SKV] Directus недоступен (${label}): используются локальные fixtures.`);
+function useDevFixtures<T>(label: string, error: unknown, fallback: () => T): T {
+  if (!allowDevFixtures) throw error;
+  console.warn(`[SKV] Directus недоступен (${label}): DIRECTUS_DEV_FALLBACK=true, используются локальные fixtures.`);
+  return fallback();
 }
 
 async function requestArticles(): Promise<Article[]> {
   try {
     const data = await directus.request(readItems("articles", {
+      // Defense in depth: Directus Public policy also limits anonymous reads to
+      // status=published. Keep the frontend filter so privileged build tokens cannot
+      // accidentally publish drafts into the static build in the future.
       filter: { status: { _eq: "published" } } as any,
       sort: ["-published_at"] as any,
       fields: [
@@ -27,9 +32,7 @@ async function requestArticles(): Promise<Article[]> {
     }));
     return data.map(mapArticle).filter(article => article.slug && article.title);
   } catch (error) {
-    if (strict) throw error;
-    fallbackWarning("articles");
-    return local.getArticles();
+    return useDevFixtures("articles", error, () => local.getArticles());
   }
 }
 
@@ -75,9 +78,7 @@ async function requestCategories(): Promise<Category[]> {
       description: item.description ? String(item.description) : undefined
     })).filter(item => item.slug && item.title);
   } catch (error) {
-    if (strict) throw error;
-    fallbackWarning("categories");
-    return localCategories;
+    return useDevFixtures("categories", error, () => localCategories);
   }
 }
 

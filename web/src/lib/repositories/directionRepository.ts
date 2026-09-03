@@ -3,7 +3,7 @@ import { directus } from "@lib/directus/client";
 import type { Direction } from "@/models/direction";
 import { directions as localDirections } from "@data/directions";
 
-const strict = import.meta.env.DIRECTUS_STRICT === "true";
+const allowDevFixtures = import.meta.env.DEV && import.meta.env.DIRECTUS_DEV_FALLBACK === "true";
 let buildDirectionsPromise: Promise<Direction[]> | undefined;
 
 function mapDirection(item: Record<string, unknown>): Direction {
@@ -28,8 +28,8 @@ async function requestDirections(): Promise<Direction[]> {
       .map((item) => mapDirection(item as unknown as Record<string, unknown>))
       .filter((item) => item.title && item.description);
   } catch (error) {
-    if (strict) throw error;
-    console.warn("[SKV] Directus directions недоступны: используется локальный fallback.");
+    if (!allowDevFixtures) throw error;
+    console.warn("[SKV] Directus directions недоступны: DIRECTUS_DEV_FALLBACK=true, используется локальный fallback.");
     return localDirections;
   }
 }
