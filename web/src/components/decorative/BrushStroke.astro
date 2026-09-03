@@ -1,0 +1,132 @@
+---
+type BrushDirection = "lt" | "rt" | "lb" | "rb";
+
+interface Props {
+  src: string;
+  direction?: BrushDirection;
+  left: number;
+  top: number;
+  width: number;
+  zIndex?: number;
+  rotate?: number;
+  delay?: number;
+  duration?: number;
+  loading?: "eager" | "lazy";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const {
+  src,
+  direction = "lt",
+  left,
+  top,
+  width,
+  zIndex = 1,
+  rotate = 0,
+  delay = 0,
+  duration = 2100,
+  loading = "eager",
+  fetchpriority = "auto"
+} = Astro.props;
+
+const angles: Record<BrushDirection, string> = {
+  lt: "135deg",
+  rt: "225deg",
+  lb: "45deg",
+  rb: "315deg"
+};
+
+const style = [
+  `--brush-left:${left}%`,
+  `--brush-top:${top}%`,
+  `--brush-width:${width}%`,
+  `--brush-z:${zIndex}`,
+  `--brush-rotate:${rotate}deg`,
+  `--brush-delay:${delay}ms`,
+  `--brush-duration:${duration}ms`,
+  `--brush-angle:${angles[direction]}`
+].join(";");
+---
+<div class="brush-stroke" style={style} data-brush-stroke>
+  <img
+    src={src}
+    alt=""
+    aria-hidden="true"
+    loading={loading}
+    decoding="async"
+    fetchpriority={fetchpriority}
+    draggable="false"
+  />
+</div>
+
+<style>
+  @property --brush-reveal {
+    syntax: "<percentage>";
+    inherits: false;
+    initial-value: 0%;
+  }
+
+  .brush-stroke {
+    position: absolute;
+    left: var(--brush-left);
+    top: var(--brush-top);
+    z-index: var(--brush-z);
+    width: var(--brush-width);
+    pointer-events: none;
+    transform: rotate(var(--brush-rotate));
+    transform-origin: center;
+    contain: layout paint style;
+  }
+
+  .brush-stroke img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    user-select: none;
+    -webkit-user-drag: none;
+    --brush-reveal: 0%;
+    -webkit-mask-image: linear-gradient(
+      var(--brush-angle),
+      #000 0%,
+      #000 var(--brush-reveal),
+      rgba(0, 0, 0, 0.45) calc(var(--brush-reveal) + 5%),
+      transparent calc(var(--brush-reveal) + 11%),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      var(--brush-angle),
+      #000 0%,
+      #000 var(--brush-reveal),
+      rgba(0, 0, 0, 0.45) calc(var(--brush-reveal) + 5%),
+      transparent calc(var(--brush-reveal) + 11%),
+      transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    will-change: -webkit-mask-image, mask-image;
+  }
+
+  :global(.brush-composition.is-painting) .brush-stroke img {
+    animation: brush-paint var(--brush-duration) cubic-bezier(.28,.62,.28,1) var(--brush-delay) both;
+  }
+
+  :global(.brush-composition.is-complete) .brush-stroke img {
+    --brush-reveal: 115%;
+    animation: none;
+    will-change: auto;
+  }
+
+  @keyframes brush-paint {
+    from { --brush-reveal: 0%; }
+    to { --brush-reveal: 115%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brush-stroke img {
+      --brush-reveal: 115%;
+      animation: none !important;
+      will-change: auto;
+    }
+  }
+</style>

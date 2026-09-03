@@ -1,0 +1,92 @@
+---
+interface Stroke {
+  src: string;
+  direction?: "lt" | "rt" | "lb" | "rb";
+  left: number;
+  top: number;
+  width: number;
+  zIndex?: number;
+  rotate?: number;
+  delay?: number;
+  duration?: number;
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+interface Props {
+  strokes: Stroke[];
+  class?: string;
+  totalDuration?: number;
+}
+
+const {
+  strokes,
+  class: className = "",
+  totalDuration = Math.max(...strokes.map((stroke) => (stroke.delay ?? 0) + (stroke.duration ?? 2100)), 0)
+} = Astro.props;
+
+import BrushStroke from "./BrushStroke.astro";
+---
+<div
+  class={`brush-composition ${className}`}
+  data-brush-composition
+  data-total-duration={totalDuration}
+  aria-hidden="true"
+>
+  {strokes.map((stroke, index) => (
+    <BrushStroke
+      {...stroke}
+      loading="eager"
+      fetchpriority={stroke.fetchpriority ?? (index === 0 ? "high" : "auto")}
+    />
+  ))}
+</div>
+
+<script>
+  const compositions = document.querySelectorAll<HTMLElement>("[data-brush-composition]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  compositions.forEach((composition) => {
+    if (reduceMotion) {
+      composition.classList.add("is-complete");
+      return;
+    }
+
+    let timer: number | undefined;
+    let started = false;
+
+    const startPainting = () => {
+      if (started) return;
+      started = true;
+      composition.classList.add("is-painting");
+
+      const duration = Number(composition.dataset.totalDuration ?? 0);
+      timer = window.setTimeout(() => {
+        composition.classList.remove("is-painting");
+        composition.classList.add("is-complete");
+      }, duration + 120);
+    };
+
+    const observer = new IntersectionObserver(([entry], currentObserver) => {
+      if (!entry?.isIntersecting) return;
+      startPainting();
+      currentObserver.unobserve(composition);
+    }, { threshold: 0.18, rootMargin: "40px 0px" });
+
+    observer.observe(composition);
+
+    window.addEventListener("pagehide", () => {
+      if (timer) window.clearTimeout(timer);
+      observer.disconnect();
+    }, { once: true });
+  });
+</script>
+
+<style>
+  .brush-composition {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    isolation: isolate;
+  }
+</style>
