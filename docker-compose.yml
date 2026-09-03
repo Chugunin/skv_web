@@ -77,6 +77,7 @@ services:
     environment:
       SITE: ${SITE}
       DIRECTUS_URL: http://directus:8055
+      PUBLIC_DIRECTUS_URL: ${PUBLIC_DIRECTUS_URL}
       DIRECTUS_STRICT: "true"
       PUBLIC_CONTACT_ENDPOINT: ${PUBLIC_CONTACT_ENDPOINT:-}
 

@@ -3,7 +3,7 @@ import Container from "@components/layout/Container.astro";
 import Reveal from "@components/decorative/Reveal.astro";
 import ArticleCard from "@components/article/ArticleCard.astro";
 import { getFeaturedPosts } from "@lib/repository";
-const posts = (await getFeaturedPosts()).slice(0, 3);
+const posts = (await getFeaturedPosts()).slice(0, 6);
 ---
 {posts.length > 0 && <section id="articles" class="featured">
   <Container>
@@ -12,5 +12,5 @@ const posts = (await getFeaturedPosts()).slice(0, 3);
   </Container>
 </section>}
 <style>
-.featured{padding-bottom:var(--section-space)}.featured__header{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:34px}.featured h2{font-size:clamp(44px,4.5vw,64px)}.featured__header>a{font-size:12px;color:var(--color-accent-strong);border-bottom:1px solid var(--color-line);padding-bottom:5px}.featured__cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:820px){.featured__cards{grid-template-columns:1fr}}@media(max-width:560px){.featured__header{align-items:flex-start;flex-direction:column}}
+.featured{padding-bottom:var(--section-space)}.featured__header{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:34px}.featured h2{font-size:clamp(44px,4.5vw,64px)}.featured__header>a{font-size:12px;color:var(--color-accent-strong);border-bottom:1px solid var(--color-line);padding-bottom:5px}.featured__cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}@media(max-width:900px){.featured__cards{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.featured__cards{grid-template-columns:1fr}}@media(max-width:560px){.featured__header{align-items:flex-start;flex-direction:column}}
 </style>

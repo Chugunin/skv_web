@@ -49,7 +49,7 @@ export async function getArticles(): Promise<Article[]> {
 export async function getFeaturedPosts(): Promise<Article[]> {
   const articles = await fromDirectus();
   const explicit = articles.filter(article => article.featured);
-  return (explicit.length ? explicit : articles).slice(0, 3);
+  return (explicit.length ? explicit : articles).slice(0, 6);
 }
 
 export async function getArchive(): Promise<Article[]> {

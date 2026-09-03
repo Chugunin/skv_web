@@ -2,21 +2,24 @@
 import Container from "@components/layout/Container.astro";
 import SectionHeading from "@components/common/SectionHeading.astro";
 import Reveal from "@components/decorative/Reveal.astro";
-const directions=[
- ["◉","Восприятие","Как мы видим себя и мир вокруг"],
- ["⌁","Мышление","Убеждения, установки и когнитивные процессы"],
- ["♡","Эмоции","Внутренние состояния и способы реагирования"],
- ["♧","Отношения","Близость, границы и взаимодействие"],
- ["♙","Личность","Особенности поведения и внутренние стратегии"],
- ["✦","Качество жизни","Осознанность, выборы и устойчивость"]
-];
+import { getDirections } from "@lib/repository";
+
+const directions = await getDirections();
 ---
 <section class="journal-directions">
   <Container>
     <Reveal class="journal-directions__heading"><SectionHeading>Направления исследований</SectionHeading></Reveal>
-    <div class="journal-directions__grid">{directions.map(([icon,title,text],i)=><Reveal as="article" class="direction" delay={i*40}><span aria-hidden="true">{icon}</span><h3>{title}</h3><p>{text}</p></Reveal>)}</div>
+    <div class="journal-directions__grid">
+      {directions.map((direction, i) =>
+        <Reveal as="article" class="direction" delay={i * 40}>
+          <span aria-hidden="true">{direction.icon || "·"}</span>
+          <h3>{direction.title}</h3>
+          <p>{direction.description}</p>
+        </Reveal>
+      )}
+    </div>
   </Container>
 </section>
 <style>
-.journal-directions{padding-bottom:var(--section-space)}.journal-directions__heading{text-align:center}.journal-directions__grid{display:grid;grid-template-columns:repeat(6,1fr);margin-top:38px}.direction{text-align:center;padding:0 22px;border-right:1px solid var(--color-border)}.direction:last-child{border-right:0}.direction>span{display:block;color:var(--color-accent);font-size:33px;line-height:1}.direction h3{margin-top:16px;font-family:Manrope,sans-serif;font-size:12px;font-weight:600}.direction p{margin-top:10px;color:var(--color-muted);font-size:10px;line-height:1.6}@media(max-width:900px){.journal-directions__grid{grid-template-columns:repeat(3,1fr);gap:32px 0}.direction:nth-child(3){border-right:0}}@media(max-width:560px){.journal-directions__grid{grid-template-columns:repeat(2,1fr)}.direction:nth-child(3){border-right:1px solid var(--color-border)}.direction:nth-child(2n){border-right:0}}
+.journal-directions{padding-bottom:var(--section-space)}.journal-directions__heading{text-align:center}.journal-directions__grid{display:grid;grid-template-columns:repeat(6,1fr);margin-top:38px}.direction{text-align:center;padding:0 22px;border-right:1px solid var(--color-border)}.direction:last-child{border-right:0}.direction>span{display:block;color:var(--color-accent);font-size:33px;line-height:1}.direction h3{margin-top:16px;font-family:Manrope,sans-serif;font-size:12px;font-weight:600}.direction p{margin-top:10px;color:var(--color-muted);font-size:10px;line-height:1.6}@media(max-width:900px){.journal-directions__grid{grid-template-columns:repeat(3,1fr);gap:32px 0}.direction:nth-child(3n){border-right:0}}@media(max-width:560px){.journal-directions__grid{grid-template-columns:repeat(2,1fr)}.direction:nth-child(3n){border-right:1px solid var(--color-border)}.direction:nth-child(2n){border-right:0}}
 </style>

@@ -65,23 +65,49 @@ if [ "$DIRECTUS_READY" != "true" ]; then
   exit 1
 fi
 
-echo "[7/11] Applying Directus schema..."
+echo "[7/11] Checking Directus schema..."
 
 SCHEMA_FILE="$PROJECT_DIR/directus/schema/schema.yaml"
+SCHEMA_HASH_FILE="$PROJECT_DIR/data/directus/.schema-applied.sha256"
 
-if [ -f "$SCHEMA_FILE" ]; then
-
-  docker compose exec -T directus \
-    node cli.js schema apply \
-    --yes \
-    /directus/schema/schema.yaml
-
-  echo "Directus schema applied successfully."
-
-else
+if [ ! -f "$SCHEMA_FILE" ]; then
 
   echo "No Directus schema snapshot found."
   echo "Skipping schema apply."
+
+else
+
+  CURRENT_SCHEMA_HASH="$(
+    sha256sum "$SCHEMA_FILE" | awk '{print $1}'
+  )"
+
+  APPLIED_SCHEMA_HASH="$(
+    cat "$SCHEMA_HASH_FILE" 2>/dev/null || true
+  )"
+
+  echo "Current schema hash: $CURRENT_SCHEMA_HASH"
+  echo "Applied schema hash: ${APPLIED_SCHEMA_HASH:-none}"
+
+  if [ "$CURRENT_SCHEMA_HASH" = "$APPLIED_SCHEMA_HASH" ]; then
+
+    echo "Directus schema unchanged."
+    echo "Skipping schema apply."
+
+  else
+
+    echo "Directus schema changed."
+    echo "Applying Directus schema..."
+
+    docker compose exec -T directus \
+      node cli.js schema apply \
+      --yes \
+      /directus/schema/schema.yaml
+
+    echo "$CURRENT_SCHEMA_HASH" > "$SCHEMA_HASH_FILE"
+
+    echo "Directus schema applied successfully."
+
+  fi
 
 fi
 
