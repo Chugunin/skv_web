@@ -64,17 +64,16 @@ const heroStrokes = [
   </div>
 
   <Container>
-    <div class="home-hero__container">
-      <div class="home-hero__grid">
-        <Reveal class="home-hero__content">
+    <div class="home-hero__grid">
+      <Reveal class="home-hero__content">
         <h1 id="home-title">SKV</h1>
         <p class="home-hero__lead">психология восприятия<br/>и качества жизни</p>
         <div class="home-hero__actions">
           <Button href="#about" variant="text">О SKV</Button>
           <Button href="#directions" variant="text">Смотреть направления</Button>
         </div>
-        </Reveal>
-      </div>
+      </Reveal>
+      <div class="home-hero__spacer" aria-hidden="true"></div>
     </div>
   </Container>
 </section>
@@ -90,12 +89,36 @@ const heroStrokes = [
     overflow: visible;
   }
 
+  .home-hero :global(.container) {
+    position: relative;
+    z-index: 2;
+    width: min(calc(100% - (var(--container-padding) * 2)), var(--container-width));
+    margin-inline: auto;
+  }
+
+  .home-hero__grid {
+    display: grid;
+    grid-template-columns: minmax(300px, .74fr) minmax(520px, 1.26fr);
+    align-items: center;
+    min-height: 580px;
+  }
+
+  .home-hero__content {
+    position: relative;
+    z-index: 3;
+  }
+
+  .home-hero__spacer {
+    min-width: 0;
+    pointer-events: none;
+  }
+
   .home-hero__brush-layer {
     position: absolute;
     z-index: 0;
-    top: 50%;
-    right: -8px;
-    width: clamp(440px, 40vw, 720px);
+    top: 51%;
+    right: -10px;
+    width: clamp(700px, 52vw, 1080px);
     aspect-ratio: 1 / 1;
     transform: translateY(-50%);
     pointer-events: none;
@@ -104,22 +127,6 @@ const heroStrokes = [
   .home-hero__brushes {
     width: 100%;
     height: 100%;
-  }
-
-  .home-hero__container {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-  }
-
-  .home-hero__grid {
-    display: block;
-    min-height: 580px;
-  }
-
-  .home-hero__content {
-    position: relative;
-    z-index: 2;
   }
 
   .home-hero h1 {
@@ -149,14 +156,40 @@ const heroStrokes = [
     color: var(--color-text);
   }
 
+  @media (max-width: 1100px) {
+    .home-hero__grid {
+      grid-template-columns: minmax(280px, .9fr) minmax(380px, 1.1fr);
+    }
+
+    .home-hero__brush-layer {
+      width: clamp(620px, 62vw, 820px);
+    }
+  }
+
   @media (max-width: 900px) {
     .home-hero {
-      min-height: auto;
+      min-height: 720px;
+      align-items: flex-start;
       padding-top: 45px;
     }
 
     .home-hero__grid {
-      min-height: 580px;
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    .home-hero__spacer {
+      display: none;
+    }
+
+    .home-hero__content {
+      max-width: min(520px, 72vw);
+    }
+
+    .home-hero__brush-layer {
+      top: 66%;
+      right: -8px;
+      width: clamp(520px, 82vw, 700px);
     }
 
     .home-hero h1 {
@@ -174,8 +207,18 @@ const heroStrokes = [
   }
 
   @media (max-width: 560px) {
-    .home-hero__grid {
-      min-height: 520px;
+    .home-hero {
+      min-height: 680px;
+    }
+
+    .home-hero__content {
+      max-width: 78vw;
+    }
+
+    .home-hero__brush-layer {
+      top: 70%;
+      right: -8px;
+      width: clamp(430px, 104vw, 580px);
     }
   }
 </style>
