@@ -41,7 +41,7 @@ const preloadImageUrl = preloadImage ? new URL(preloadImage, config.siteUrl).toS
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600&display=swap" />
     {preloadImageUrl && <link rel="preload" as="image" href={preloadImageUrl} fetchpriority="high" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#f7f4ef" />
+    <meta name="theme-color" content="#ede9e4" />
     <title>{title}</title>
     <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="ru_RU" />
@@ -57,9 +57,17 @@ const preloadImageUrl = preloadImage ? new URL(preloadImage, config.siteUrl).toS
     <slot name="head" />
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Перейти к основному содержанию</a>
-    <slot />
-    <ContactModal />
+    <div class="site-corners" aria-hidden="true">
+      <span class="site-corners__ornament site-corners__ornament--top-left"></span>
+      <span class="site-corners__ornament site-corners__ornament--bottom-right"></span>
+    </div>
+
+    <div class="site-shell">
+      <a class="skip-link" href="#main-content">Перейти к основному содержанию</a>
+      <slot />
+      <ContactModal />
+    </div>
+
     <script is:inline>
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const observer = new IntersectionObserver((entries, currentObserver) => {

@@ -1,14 +1,14 @@
 :root {
   /* Palette: значения основаны на светлой warm-white / graphite / champagne системе из ТЗ и референсов. */
-  --color-background: #f7f4ef;
-  --color-surface: #fffdf9;
+  --color-background: #ede9e4;
+  --color-surface: #f8f4ef;
   --color-text: #171614;
   --color-muted: #69645e;
   --color-accent: #b9843f;
   --color-accent-strong: #9f6e31;
   --color-line: rgba(185, 132, 63, 0.42);
   --color-border: rgba(23, 22, 20, 0.12);
-  --color-overlay: rgba(247, 244, 239, 0.86);
+  --color-overlay: rgba(237, 233, 228, 0.86);
 
   --container-width: 1440px;
   --container-padding: clamp(20px, 4vw, 64px);
