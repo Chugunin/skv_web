@@ -1,12 +1,19 @@
 ---
 import Container from "@components/layout/Container.astro";
-import ContactForm from "@components/forms/ContactForm.astro";
 import Reveal from "@components/decorative/Reveal.astro";
 import GeometricFigure from "@components/decorative/GeometricFigure.astro";
+import Button from "@components/common/Button.astro";
 ---
 <section class="dialog" id="dialog">
- <Container><div class="dialog__grid"><Reveal class="dialog__copy"><GeometricFigure class="dialog__geometry" size={150}/><h2>Давайте начнем с диалога</h2><p>Первая встреча — это возможность разобраться в вашем запросе, определить направление работы и выбрать подходящий формат взаимодействия.</p></Reveal><Reveal class="dialog__form" delay={100}><ContactForm mode="therapy" /></Reveal></div></Container>
+  <Container>
+    <Reveal class="dialog__copy">
+      <GeometricFigure class="dialog__geometry" size={150}/>
+      <h2>Давайте начнем с диалога</h2>
+      <p>Первая встреча — это возможность разобраться в вашем запросе, определить направление работы и выбрать подходящий формат взаимодействия.</p>
+      <Button variant="primary" data-contact-modal-open data-contact-source="therapy">Записаться на консультацию</Button>
+    </Reveal>
+  </Container>
 </section>
 <style>
-.dialog{padding:clamp(70px,8vw,120px) 0;position:relative;overflow:hidden}.dialog__grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(50px,8vw,120px);align-items:center}.dialog__copy{position:relative}.dialog h2{font-size:clamp(42px,4.6vw,68px)}.dialog__copy p{margin-top:28px;max-width:520px;color:var(--color-muted);font-size:clamp(14px,1.05vw,16px);line-height:1.8}.dialog__geometry{position:absolute;left:-190px;bottom:-95px;opacity:.5}@media(max-width:850px){.dialog__grid{grid-template-columns:1fr}.dialog__geometry{display:none}}
+.dialog{padding:clamp(70px,8vw,120px) 0;position:relative;overflow:hidden}.dialog__copy{position:relative;max-width:760px}.dialog h2{font-size:clamp(42px,4.6vw,68px)}.dialog__copy p{margin-top:28px;max-width:600px;color:var(--color-muted);font-size:clamp(14px,1.05vw,16px);line-height:1.8}.dialog__copy :global(.button){margin-top:34px;border-radius:999px}.dialog__geometry{position:absolute;left:-190px;bottom:-95px;opacity:.5}@media(max-width:850px){.dialog__geometry{display:none}.dialog__copy :global(.button){width:100%;max-width:360px}}
 </style>

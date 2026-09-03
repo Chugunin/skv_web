@@ -1,6 +1,7 @@
 ---
 import "@styles/globals.css";
 import { config } from "@lib/config";
+import ContactModal from "@components/forms/ContactModal.astro";
 
 interface Props {
   title?: string;
@@ -58,6 +59,7 @@ const preloadImageUrl = preloadImage ? new URL(preloadImage, config.siteUrl).toS
   <body>
     <a class="skip-link" href="#main-content">Перейти к основному содержанию</a>
     <slot />
+    <ContactModal />
     <script is:inline>
       if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const observer = new IntersectionObserver((entries, currentObserver) => {

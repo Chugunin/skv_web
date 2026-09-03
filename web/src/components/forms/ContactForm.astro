@@ -2,12 +2,11 @@
 import Button from "@components/common/Button.astro";
 
 interface Props {
-  mode?: "default" | "therapy";
+  source?: "home" | "therapy" | "header" | "fab";
 }
 
-const { mode = "default" } = Astro.props;
-const therapy = mode === "therapy";
-const formId = `contact-${therapy ? "therapy" : "default"}`;
+const { source = "home" } = Astro.props;
+const formId = "contact-modal-form";
 const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
 ---
 <form
@@ -25,34 +24,24 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
     </div>
 
     <div class="field">
-      <label for={`${formId}-contact`}>{therapy ? "Контакт" : "Телефон"}</label>
+      <label for={`${formId}-contact`}>Контакт</label>
       <input
         id={`${formId}-contact`}
         name="contact"
         type="text"
-        autocomplete={therapy ? "email" : "tel"}
+        autocomplete="email"
         required
         minlength="3"
         maxlength="120"
         aria-describedby={`${formId}-contact-help`}
       />
-      <p class="field__help" id={`${formId}-contact-help`}>
-        {therapy ? "Телефон, Telegram или email — как удобнее связаться." : "Укажите номер с кодом страны."}
-      </p>
+      <p class="field__help" id={`${formId}-contact-help`}>Телефон, Telegram или email — как удобнее связаться.</p>
       <p class="field__error" data-error-for="contact" aria-live="polite"></p>
     </div>
   </div>
 
-  {!therapy && (
-    <div class="field">
-      <label for={`${formId}-email`}>Email</label>
-      <input id={`${formId}-email`} name="email" type="email" autocomplete="email" required maxlength="160" />
-      <p class="field__error" data-error-for="email" aria-live="polite"></p>
-    </div>
-  )}
-
   <div class="field">
-    <label for={`${formId}-message`}>{therapy ? "Краткое описание запроса" : "Сообщение"}</label>
+    <label for={`${formId}-message`}>Краткое описание запроса</label>
     <textarea id={`${formId}-message`} name="message" rows="5" required minlength="10" maxlength="3000"></textarea>
     <p class="field__error" data-error-for="message" aria-live="polite"></p>
   </div>
@@ -62,7 +51,7 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
     <input id={`${formId}-website`} name="website" type="text" tabindex="-1" autocomplete="off" />
   </div>
 
-  <input type="hidden" name="source" value={therapy ? "therapy" : "home"} />
+  <input type="hidden" name="source" value={source} data-contact-source />
   <input type="hidden" name="startedAt" value="" data-form-started-at />
 
   <Button type="submit" variant="primary">Отправить заявку</Button>
@@ -84,7 +73,7 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
   }
 
   function clearErrors(form: HTMLFormElement) {
-    ["name", "contact", "email", "message"].forEach(name => setError(form, name));
+    ["name", "contact", "message"].forEach(name => setError(form, name));
   }
 
   forms.forEach((form) => {
@@ -144,7 +133,10 @@ const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? "";
           throw new Error(`HTTP ${response.status}`);
         }
 
+        const currentSource = form.querySelector<HTMLInputElement>("[data-contact-source]")?.value ?? "home";
         form.reset();
+        const sourceField = form.querySelector<HTMLInputElement>("[data-contact-source]");
+        if (sourceField) sourceField.value = currentSource;
         if (startedAt) startedAt.value = String(Date.now());
         if (status) status.textContent = responseBody?.message || "Заявка отправлена. Мы свяжемся с вами по указанному контакту.";
       } catch (error) {

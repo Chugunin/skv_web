@@ -4,6 +4,8 @@ interface Props {
   variant?: "primary" | "outline" | "text";
   type?: "button" | "submit" | "reset";
   class?: string;
+  "data-contact-modal-open"?: boolean | string;
+  "data-contact-source"?: "home" | "therapy" | "header" | "fab";
 }
 const { href, variant = "outline", type = "button", class: className = "", ...rest } = Astro.props;
 const classes = `button button--${variant} ${className}`;

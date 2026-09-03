@@ -1,0 +1,129 @@
+---
+import ContactForm from "./ContactForm.astro";
+---
+<div class="contact-modal" data-contact-modal hidden>
+  <div class="contact-modal__backdrop" data-contact-modal-backdrop></div>
+  <section
+    class="contact-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="contact-modal-title"
+    aria-describedby="contact-modal-description"
+    tabindex="-1"
+    data-contact-modal-dialog
+  >
+    <button class="contact-modal__close" type="button" aria-label="Закрыть форму" data-contact-modal-close>
+      <span></span><span></span>
+    </button>
+    <div class="contact-modal__heading">
+      <p class="contact-modal__eyebrow">SKV Therapy</p>
+      <h2 id="contact-modal-title">Записаться на консультацию</h2>
+      <p id="contact-modal-description">Оставьте удобный контакт и коротко опишите запрос. Мы свяжемся с вами, чтобы договориться о первой встрече.</p>
+    </div>
+    <ContactForm />
+  </section>
+</div>
+
+<script>
+  const modal = document.querySelector<HTMLElement>("[data-contact-modal]");
+  const dialog = modal?.querySelector<HTMLElement>("[data-contact-modal-dialog]");
+  const closeButton = modal?.querySelector<HTMLButtonElement>("[data-contact-modal-close]");
+  const backdrop = modal?.querySelector<HTMLElement>("[data-contact-modal-backdrop]");
+  const form = modal?.querySelector<HTMLFormElement>("[data-contact-form]");
+  const sourceField = form?.querySelector<HTMLInputElement>("[data-contact-source]");
+  const startedAt = form?.querySelector<HTMLInputElement>("[data-form-started-at]");
+  let returnFocus: HTMLElement | null = null;
+
+  const focusableSelector = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  const openModal = (trigger: HTMLElement) => {
+    if (!modal || !dialog) return;
+    returnFocus = trigger;
+    if (sourceField) sourceField.value = trigger.dataset.contactSource || "home";
+    if (startedAt) startedAt.value = String(Date.now());
+    modal.hidden = false;
+    document.documentElement.classList.add("contact-modal-open");
+    requestAnimationFrame(() => {
+      modal.classList.add("is-open");
+      const firstField = dialog.querySelector<HTMLElement>('[name="name"]') ?? closeButton ?? dialog;
+      firstField.focus();
+    });
+  };
+
+  const closeModal = () => {
+    if (!modal || modal.hidden) return;
+    modal.classList.remove("is-open");
+    document.documentElement.classList.remove("contact-modal-open");
+    window.setTimeout(() => {
+      modal.hidden = true;
+      returnFocus?.focus();
+      returnFocus = null;
+    }, 180);
+  };
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as HTMLElement;
+    const trigger = target.closest<HTMLElement>("[data-contact-modal-open]");
+    if (!trigger) return;
+    event.preventDefault();
+    openModal(trigger);
+  });
+
+  closeButton?.addEventListener("click", closeModal);
+  backdrop?.addEventListener("click", closeModal);
+
+  document.addEventListener("keydown", (event) => {
+    if (!modal || modal.hidden || !dialog) return;
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeModal();
+      return;
+    }
+    if (event.key !== "Tab") return;
+
+    const focusable = Array.from(dialog.querySelectorAll<HTMLElement>(focusableSelector)).filter((element) => !element.hasAttribute("hidden"));
+    if (!focusable.length) {
+      event.preventDefault();
+      dialog.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+</script>
+
+<style>
+  .contact-modal[hidden] { display: none; }
+  .contact-modal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: clamp(18px, 4vw, 48px); opacity: 0; transition: opacity 180ms ease; }
+  .contact-modal.is-open { opacity: 1; }
+  .contact-modal__backdrop { position: absolute; inset: 0; background: rgba(34,31,29,.42); backdrop-filter: blur(8px); }
+  .contact-modal__dialog { position: relative; z-index: 1; width: min(760px, 100%); max-height: min(820px, calc(100vh - 36px)); overflow: auto; padding: clamp(28px, 5vw, 58px); background: rgba(250,247,242,.98); border: 1px solid rgba(185,132,63,.28); box-shadow: 0 30px 90px rgba(45,39,34,.24); transform: translateY(12px) scale(.985); transition: transform 180ms ease; outline: 0; }
+  .contact-modal.is-open .contact-modal__dialog { transform: translateY(0) scale(1); }
+  .contact-modal__close { position: absolute; top: 20px; right: 20px; width: 42px; height: 42px; display: grid; place-items: center; border: 1px solid var(--color-border); background: rgba(255,255,255,.48); transition: border-color var(--transition-fast), background var(--transition-fast); }
+  .contact-modal__close:hover, .contact-modal__close:focus-visible { border-color: var(--color-accent); background: rgba(255,255,255,.78); outline: none; }
+  .contact-modal__close span { position: absolute; width: 17px; height: 1px; background: var(--color-text); }
+  .contact-modal__close span:first-child { transform: rotate(45deg); }
+  .contact-modal__close span:last-child { transform: rotate(-45deg); }
+  .contact-modal__heading { max-width: 620px; margin-bottom: 32px; padding-right: 46px; }
+  .contact-modal__eyebrow { margin-bottom: 10px; color: var(--color-accent-strong); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
+  .contact-modal h2 { font-size: clamp(38px, 5vw, 62px); line-height: .98; letter-spacing: -.025em; }
+  .contact-modal__heading > p:last-child { margin-top: 18px; max-width: 590px; color: var(--color-muted); font-size: 14px; line-height: 1.7; }
+  :global(html.contact-modal-open) { overflow: hidden; }
+  @media (max-width: 620px) {
+    .contact-modal { padding: 10px; align-items: end; }
+    .contact-modal__dialog { width: 100%; max-height: calc(100dvh - 20px); padding: 28px 20px 24px; }
+    .contact-modal__close { top: 14px; right: 14px; }
+    .contact-modal__heading { margin-bottom: 24px; padding-right: 38px; }
+    .contact-modal h2 { font-size: clamp(34px, 10vw, 48px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .contact-modal, .contact-modal__dialog { transition: none; }
+  }
+</style>

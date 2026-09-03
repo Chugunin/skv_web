@@ -18,7 +18,7 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
       </nav>
 
       <div class="site-header__cta">
-        <Button href="/#contact" variant="outline">Записаться<br />на консультацию</Button>
+        <Button variant="primary" data-contact-modal-open data-contact-source="header">Записаться<br />на консультацию</Button>
       </div>
 
       <div class="mobile-nav">
@@ -27,7 +27,7 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
         </button>
         <nav id="mobile-menu" class="mobile-nav__panel" aria-label="Мобильная навигация" hidden data-mobile-panel>
           {navigation.map((item) => <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.title}</a>)}
-          <Button href="/#contact" variant="outline">Записаться на консультацию</Button>
+          <Button variant="primary" data-contact-modal-open data-contact-source="header">Записаться на консультацию</Button>
         </nav>
         <nav class="mobile-nav__fallback" aria-label="Мобильная навигация">
           {navigation.map((item) => <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.title}</a>)}
@@ -62,7 +62,7 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
   };
 
   toggle?.addEventListener("click", () => toggle.getAttribute("aria-expanded") === "true" ? close() : open());
-  panel?.addEventListener("click", (event) => { if ((event.target as HTMLElement).closest("a")) close(); });
+  panel?.addEventListener("click", (event) => { if ((event.target as HTMLElement).closest("a, [data-contact-modal-open]")) close(); });
   document.addEventListener("keydown", (event) => {
     if (toggle?.getAttribute("aria-expanded") !== "true" || !panel) return;
 
@@ -103,7 +103,7 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
   .desktop-nav a:hover { color: var(--color-accent-strong); }
   .desktop-nav a[aria-current="page"]::after { content: ""; position: absolute; inset-inline: 0; bottom: 0; height: 1px; background: var(--color-accent); }
   .site-header__cta { justify-self: end; }
-  .site-header__cta :global(.button) { text-align: center; line-height: 1.4; gap: 12px; min-width: 164px; }
+  .site-header__cta :global(.button) { text-align: center; line-height: 1.35; gap: 12px; min-width: 178px; border-radius: 999px; box-shadow: 0 8px 22px rgba(91,67,39,.10); }
   .mobile-nav { display: none; }
 
   @media (max-width: 900px) {
@@ -118,6 +118,7 @@ const isActive = (href: string) => href === "/" ? path === "/" : href.startsWith
     .mobile-nav__panel:not([hidden]) { display: grid; }
     .mobile-nav__panel a { min-height: 40px; display: flex; align-items: center; }
     .mobile-nav__panel a[aria-current="page"] { color: var(--color-accent-strong); }
+    .mobile-nav__panel :global(.button) { width: 100%; border-radius: 999px; }
     .mobile-nav__fallback { display: none; }
     :global(html:not(.js)) .mobile-nav__toggle { display: none; }
     :global(html:not(.js)) .mobile-nav__fallback {
