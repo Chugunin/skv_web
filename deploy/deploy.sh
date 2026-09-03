@@ -2,22 +2,16 @@
 set -Eeuo pipefail
 
 PROJECT_DIR="/opt/skv_web"
-BRANCH="master"
 
 cd "$PROJECT_DIR"
 
 echo "=== SKV deploy started ==="
 
-echo "[1/11] Updating repository..."
-
-git fetch origin "$BRANCH"
-git reset --hard "origin/$BRANCH"
-
-echo "[2/11] Starting database..."
+echo "[1/10] Starting database..."
 
 docker compose up -d postgres
 
-echo "[3/11] Waiting for PostgreSQL..."
+echo "[2/10] Waiting for PostgreSQL..."
 
 until docker exec skv-postgres \
   pg_isready \
@@ -30,15 +24,15 @@ done
 
 echo "PostgreSQL is ready."
 
-echo "[4/11] Creating database backup..."
+echo "[3/10] Creating database backup..."
 
 bash "$PROJECT_DIR/deploy/backup.sh"
 
-echo "[5/11] Starting Directus..."
+echo "[4/10] Starting Directus..."
 
 docker compose up -d directus
 
-echo "[6/11] Waiting for Directus..."
+echo "[5/10] Waiting for Directus..."
 
 DIRECTUS_READY=false
 
@@ -67,7 +61,7 @@ if [ "$DIRECTUS_READY" != "true" ]; then
   exit 1
 fi
 
-echo "[7/11] Applying Directus schema..."
+echo "[6/10] Applying Directus schema..."
 
 SCHEMA_FILE="$PROJECT_DIR/directus/schema/schema.yaml"
 
@@ -87,7 +81,7 @@ else
 
 fi
 
-echo "[8/11] Building Astro..."
+echo "[7/10] Building Astro..."
 
 if ! timeout 20m \
   docker compose \
@@ -103,7 +97,7 @@ then
   exit 1
 fi
 
-echo "[9/11] Saving current web image..."
+echo "[8/10] Saving current web image..."
 
 if docker image inspect \
   skv-web:latest \
@@ -123,7 +117,7 @@ else
 
 fi
 
-echo "[10/11] Building web image..."
+echo "[9/10] Building web image..."
 
 if ! docker compose build web; then
 
@@ -132,7 +126,7 @@ if ! docker compose build web; then
   exit 1
 fi
 
-echo "[11/11] Deploying web..."
+echo "[10/10] Deploying web..."
 
 docker compose up -d web
 
