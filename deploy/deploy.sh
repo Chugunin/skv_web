@@ -3,6 +3,36 @@ set -Eeuo pipefail
 
 PROJECT_DIR="/opt/skv_web"
 
+
+wait_directus() {
+  local attempts="${1:-90}"
+  local sleep_seconds="${2:-2}"
+
+  echo "Waiting for Directus..."
+
+  for i in $(seq 1 "$attempts"); do
+    if curl -fsS \
+      http://127.0.0.1:8055/server/ping \
+      >/dev/null 2>&1
+    then
+      echo "Directus is ready."
+      return 0
+    fi
+
+    sleep "$sleep_seconds"
+  done
+
+  echo "ERROR: Directus failed readiness check after $((attempts * sleep_seconds)) seconds."
+
+  docker compose logs \
+    --tail=100 \
+    directus \
+    || true
+
+  return 1
+}
+
+
 cd "$PROJECT_DIR"
 
 echo "=== SKV deploy started ==="
@@ -38,30 +68,7 @@ docker compose up -d directus
 
 echo "[6/11] Waiting for Directus..."
 
-DIRECTUS_READY=false
-
-for i in $(seq 1 60); do
-
-  if curl -fsS \
-    http://127.0.0.1:8055/server/ping \
-    >/dev/null 2>&1
-  then
-    DIRECTUS_READY=true
-    echo "Directus is ready."
-    break
-  fi
-
-  sleep 2
-done
-
-if [ "$DIRECTUS_READY" != "true" ]; then
-
-  echo "ERROR: Directus failed readiness check."
-
-  docker compose logs \
-    --tail=100 \
-    directus || true
-
+if ! wait_directus 90 2; then
   exit 1
 fi
 
@@ -106,6 +113,16 @@ else
     echo "$CURRENT_SCHEMA_HASH" > "$SCHEMA_HASH_FILE"
 
     echo "Directus schema applied successfully."
+    echo "Restarting Directus to refresh runtime schema/cache..."
+
+    docker compose restart directus
+
+    if ! wait_directus 90 2; then
+      echo "ERROR: Directus did not become ready after schema apply."
+      exit 1
+    fi
+
+    echo "Directus restarted successfully after schema apply."
 
   fi
 
