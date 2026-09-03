@@ -45,26 +45,16 @@ input, textarea, select { color: inherit; }
   pointer-events: none;
 }
 
+.site-side-art picture {
+  display: block;
+}
+
 .site-side-art__ornament {
   display: block;
-  width: clamp(280px, 34vw, 520px);
+  width: auto;
   height: auto;
   max-width: none;
-  opacity: 0.9;
-}
-
-@media (max-width: 900px) {
-  .site-side-art__ornament {
-    width: clamp(230px, 48vw, 360px);
-    opacity: 0.82;
-  }
-}
-
-@media (max-width: 560px) {
-  .site-side-art__ornament {
-    width: min(62vw, 300px);
-    opacity: 0.74;
-  }
+  opacity: 1;
 }
 
 .js [data-reveal] {
