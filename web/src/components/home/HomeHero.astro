@@ -64,15 +64,17 @@ const heroStrokes = [
   </div>
 
   <Container>
-    <div class="home-hero__grid">
-      <Reveal class="home-hero__content">
+    <div class="home-hero__container">
+      <div class="home-hero__grid">
+        <Reveal class="home-hero__content">
         <h1 id="home-title">SKV</h1>
         <p class="home-hero__lead">психология восприятия<br/>и качества жизни</p>
         <div class="home-hero__actions">
           <Button href="#about" variant="text">О SKV</Button>
           <Button href="#directions" variant="text">Смотреть направления</Button>
         </div>
-      </Reveal>
+        </Reveal>
+      </div>
     </div>
   </Container>
 </section>
@@ -93,7 +95,7 @@ const heroStrokes = [
     z-index: 0;
     top: 50%;
     right: -8px;
-    width: clamp(220px, 20vw, 360px);
+    width: clamp(440px, 40vw, 720px);
     aspect-ratio: 1 / 1;
     transform: translateY(-50%);
     pointer-events: none;
@@ -104,16 +106,14 @@ const heroStrokes = [
     height: 100%;
   }
 
-  .home-hero :global(.container) {
+  .home-hero__container {
     position: relative;
     z-index: 2;
     width: 100%;
   }
 
   .home-hero__grid {
-    display: grid;
-    grid-template-columns: minmax(300px, .74fr) minmax(520px, 1.26fr);
-    align-items: center;
+    display: block;
     min-height: 580px;
   }
 
@@ -156,7 +156,6 @@ const heroStrokes = [
     }
 
     .home-hero__grid {
-      grid-template-columns: 1fr;
       min-height: 580px;
     }
 
